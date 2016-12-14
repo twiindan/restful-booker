@@ -74,6 +74,6 @@ exports.delete = function(id, callback){
 
 exports.deleteAll = function(callback){
   Booking.remove({}, function(err){
-    callback(null); 
+    callback(null);
   })
 }

@@ -2,42 +2,25 @@ var request      = require('supertest-as-promised'),
     expect       = require('chai').expect,
     should       = require('chai').should(),
     mongoose     = require('mongoose'),
-    js2xmlparser = require("js2xmlparser"),
     assert       = require('assert'),
-    xml2js       = require('xml2js').parseString;
+    helpers      = require('./helpers'),
+    server;
 
 mongoose.createConnection('mongodb://localhost/restful-booker');
 
-var generatePayload = function(firstname, lastname, totalprice, depositpaid, additionalneeds, checkin, checkout){
-  var payload = {
-      'firstname': firstname,
-      'lastname': lastname,
-      'totalprice': totalprice,
-      'depositpaid': depositpaid,
-      'bookingdates': {
-        'checkin': checkin,
-        'checkout': checkout
-      }
-    }
-
-  if(typeof(additionalneeds) !== 'undefined'){
-    payload.additionalneeds = additionalneeds;
-  }
-
-  return payload
-}
-
-var payload  = generatePayload('Sally', 'Brown', 111, true, 'Breakfast', '2013-02-01', '2013-02-04'),
-    payload2 = generatePayload('Geoff', 'White', 111, true, 'Breakfast', '2013-02-02', '2013-02-05'),
-    payload3 = generatePayload('Bob', 'Brown', 111, true, 'Breakfast', '2013-02-03', '2013-02-06');
-
-var server = require('../app')
+var payload  = helpers.generatePayload('Sally', 'Brown', 111, true, 'Breakfast', '2013-02-01', '2013-02-04'),
+    payload2 = helpers.generatePayload('Geoff', 'White', 111, true, 'Breakfast', '2013-02-02', '2013-02-05'),
+    payload3 = helpers.generatePayload('Bob', 'Brown', 111, true, 'Breakfast', '2013-02-03', '2013-02-06');
 
 describe('restful-booker', function () {
 
   beforeEach(function(){
+    process.env['payload'] = 'json';
+    delete require.cache[require.resolve('../app')];
+    server = require('../app');
+
     mongoose.connection.db.dropDatabase();
-  })
+  });
 
   it('responds to /ping', function testPing(done){
     request(server)
@@ -53,11 +36,15 @@ describe('restful-booker', function () {
 
 });
 
-describe('restful-booker - GET /booking', function () {
+describe('restful-booker - GET /booking - JSON feature switch', function () {
 
   beforeEach(function(){
+    process.env['payload'] = 'json';
+    delete require.cache[require.resolve('../app')];
+    server = require('../app');
+
     mongoose.connection.db.dropDatabase();
-  })
+  });
 
   it('responds with all booking ids when GET /booking', function testGetAllBookings(done){
     request(server)
@@ -211,7 +198,7 @@ describe('restful-booker - GET /booking', function () {
     request(server)
       .post('/booking')
       .send(payload)
-      .then(function(){
+      .then(function(res){
         request(server)
           .get('/booking/1')
           .set('Accept', 'application/json')
@@ -220,49 +207,23 @@ describe('restful-booker - GET /booking', function () {
       });
   });
 
-  it('responds with an XML payload when GET /booking/{id} with accept application/xml', function testGetWithXMLAccept(done){
-    xmlPayload = js2xmlparser('booking', payload)
-
-    request(server)
-      .post('/booking')
-      .send(payload)
-      .then(function(){
-        request(server)
-          .get('/booking/1')
-          .set('Accept', 'application/xml')
-          .expect(200)
-          .expect(xmlPayload, done)
-      });
-  });
-
 });
 
-describe('restful-booker - POST /booking', function () {
+describe('restful-booker - POST /booking - JSON feature switch', function () {
+
   beforeEach(function(){
+    process.env['payload'] = 'json';
+    delete require.cache[require.resolve('../app')];
+    server = require('../app');
+
     mongoose.connection.db.dropDatabase();
-  })
+  });
 
   it('responds with the created booking and assigned booking id', function testCreateBooking(done){
     request(server)
       .post('/booking')
       .set('Accept', 'application/json')
       .send(payload)
-      .expect(200)
-      .expect(function(res){
-        res.body.bookingid.should.equal(1);
-        res.body.booking.should.deep.equal(payload);
-      })
-      .end(done)
-  });
-
-  it('responds with the created booking and assigned booking id when sent an XML payload', function testCreateBooking(done){
-    var xmlPayload = js2xmlparser('booking', payload)
-
-    request(server)
-      .post('/booking')
-      .set('Content-type', 'text/xml')
-      .set('Accept', 'application/json')
-      .send(xmlPayload)
       .expect(200)
       .expect(function(res){
         res.body.bookingid.should.equal(1);
@@ -297,37 +258,6 @@ describe('restful-booker - POST /booking', function () {
       })
   });
 
-  it('responds with an XML payload when POST /booking with accept application/xml', function testGetWithXMLAccept(done){
-    var xmlPayload = js2xmlparser('created-booking', { "bookingid": 1, "booking": payload2 })
-
-    parseBooleans = function(str) {
-      if (/^(?:true|false)$/i.test(str)) {
-        str = str.toLowerCase() === 'true';
-      }
-      return str;
-    };
-
-    parseNumbers = function(str) {
-      if (!isNaN(str)) {
-        str = str % 1 === 0 ? parseInt(str, 10) : parseFloat(str);
-      }
-      return str;
-    };
-
-    request(server)
-      .post('/booking')
-      .set('Accept', 'application/xml')
-      .send(payload2)
-      .expect(200)
-      .expect(function(res){
-        xml2js(res.text, {explicitArray: false, valueProcessors: [parseNumbers, parseBooleans]}, function (err, result) {
-          result['created-booking'].booking.should.deep.equal(payload2);
-          result['created-booking'].bookingid.should.equal(1);
-        });
-      })
-      .end(done);
-  });
-
   it('responds with a 200 when a payload with too many params are sent', function testCreateExtraPayload(done){
     var extraPayload = payload
     extraPayload.extra = 'bad'
@@ -339,16 +269,17 @@ describe('restful-booker - POST /booking', function () {
       .expect(200, done);
   });
 
-  it('responds with a 418 when using a bad accept header', function testTeapot(done){
-    request(server)
-      .post('/booking')
-      .set('Accept', 'application/ogg')
-      .send(payload)
-      .expect(418, done)
-  })
 });
 
-describe('restful-booker POST /auth', function(){
+describe('restful-booker POST /auth - JSON feature switch', function(){
+
+  beforeEach(function(){
+    process.env['payload'] = 'json';
+    delete require.cache[require.resolve('../app')];
+    server = require('../app');
+
+    mongoose.connection.db.dropDatabase();
+  });
 
   it('responds with a 200 and a token to use when POSTing a valid credential', function testAuthReturnsToken(done){
     request(server)
@@ -374,7 +305,15 @@ describe('restful-booker POST /auth', function(){
 
 });
 
-describe('restful-booker - PUT /booking', function () {
+describe('restful-booker - PUT /booking - JSON feature switch', function () {
+
+  beforeEach(function(){
+    process.env['payload'] = 'json';
+    delete require.cache[require.resolve('../app')];
+    server = require('../app');
+
+    mongoose.connection.db.dropDatabase();
+  });
 
   it('responds with a 403 when no token is sent', function testNoLoginForPut(done){
     request(server)
@@ -444,55 +383,19 @@ describe('restful-booker - PUT /booking', function () {
           .send(payload2)
           .expect(405, done);
       })
-  })
-
-  it('responds with a 200 and an updated payload when requesting with an XML', function testUpdatingABookingWithXML(done){
-    var xmlPayload = js2xmlparser('booking', payload2)
-
-    request(server)
-      .post('/booking')
-      .send(payload)
-      .then(function(){
-        return request(server)
-          .post('/auth')
-          .send({'username': 'admin', 'password': 'password123'})
-      })
-      .then(function(res){
-        request(server)
-          .put('/booking/1')
-          .set('Cookie', 'token=' + res.body.token)
-          .set('Content-type', 'text/xml')
-          .set('Accept', 'application/json')
-          .send(xmlPayload)
-          .expect(200)
-          .expect(payload2, done);
-      })
   });
 
-  it('responds with an XML payload when PUT /booking with accept application/xml', function testPutWithXMLAccept(done){
-    xmlPayload = js2xmlparser('booking', payload2)
-
-    request(server)
-      .post('/booking')
-      .send(payload)
-      .then(function(){
-        return request(server)
-          .post('/auth')
-          .send({'username': 'admin', 'password': 'password123'})
-      })
-      .then(function(res){
-        request(server)
-          .put('/booking/1')
-          .set('Cookie', 'token=' + res.body.token)
-          .set('Accept', 'application/xml')
-          .send(payload2)
-          .expect(200)
-          .expect(xmlPayload, done);
-      })
-  });
 });
 
-describe('restful-booker DELETE /booking', function(){
+describe('restful-booker DELETE /booking - JSON feature switch', function(){
+
+  beforeEach(function(){
+    process.env['payload'] = 'json';
+    delete require.cache[require.resolve('../app')];
+    server = require('../app');
+
+    mongoose.connection.db.dropDatabase();
+  });
 
   it('responds with a 403 when not authorised', function testNoLoginForDelete(done){
     request(server)
@@ -540,12 +443,12 @@ describe('restful-booker DELETE /booking', function(){
       .send(payload)
       .then(function(res){
         return request(server)
-          .delete('/booking/2')
+          .delete('/booking/1')
           .set('Authorization', 'Basic YWRtaW46cGFzc3dvcmQxMjM=')
           .expect(201)
       }).then(function(){
         request(server)
-          .get('/booking/2')
+          .get('/booking/1')
           .expect(404, done)
       });
   });

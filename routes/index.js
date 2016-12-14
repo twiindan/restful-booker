@@ -55,7 +55,7 @@ router.get('/booking', function(req, res, next) {
     var booking = parse.bookingids(req, record);
 
     if(!booking){
-      res.sendStatus(418);
+      res.sendStatus(500);
     } else {
       res.send(booking);
     }
@@ -68,7 +68,7 @@ router.get('/booking/:id',function(req, res, next){
       var booking = parse.booking(req.headers.accept, record);
 
       if(!booking){
-        res.sendStatus(418);
+        res.sendStatus(500);
       } else {
         res.send(booking);
       }
@@ -90,7 +90,7 @@ router.post('/booking', function(req, res, next) {
       var record = parse.bookingWithId(req, booking);
 
       if(!record){
-        res.sendStatus(418);
+        res.sendStatus(500);
       } else {
         res.send(record);
       }
@@ -100,13 +100,17 @@ router.post('/booking', function(req, res, next) {
 
 router.put('/booking/:id', function(req, res, next) {
   if(globalLogins[req.cookies.token] || req.headers.authorization == 'Basic YWRtaW46cGFzc3dvcmQxMjM='){
-    Booking.update(req.params.id, req.body, function(err){
+    updatedBooking = req.body;
+
+    if(req.headers['content-type'] === 'text/xml') updatedBooking = updatedBooking.booking;
+
+    Booking.update(req.params.id, updatedBooking, function(err){
       Booking.get(req.params.id, function(err, record){
         if(record){
           var booking = parse.booking(req.headers.accept, record);
 
           if(!booking){
-            res.sendStatus(418);
+            res.sendStatus(500);
           } else {
             res.send(booking);
           }
@@ -137,14 +141,18 @@ router.delete('/booking/:id', function(req, res, next) {
 });
 
 router.post('/auth', function(req, res, next){
-  if(req.body.username === "admin" && req.body.password === "password123"){
+  credentials = req.body;
+
+  if(req.headers['content-type'] === 'text/xml') credentials = credentials.auth;
+
+  if(credentials.username === "admin" && credentials.password === "password123"){
     var token = crypto.randomBytes(Math.ceil(15/2))
                     .toString('hex')
                     .slice(0,15);
 
     globalLogins[token] = true;
 
-    res.send({'token': token});
+    res.send(parse.token(token));
   } else {
     res.send({'reason': 'Bad credentials'});
   }
