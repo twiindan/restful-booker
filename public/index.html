@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="UTF-8">
+    <title>Hotel booking form</title>
+    <link href="https://code.jquery.com/ui/1.11.4/themes/ui-lightness/jquery-ui.css" rel="stylesheet">
+    <link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-1q8mTJOASx8j1Au+a5WDVnPi2lkFfwwEAa8hDDdjZlpLegxhjVME1fgjWPGmkzs7" crossorigin="anonymous">
+    <script src="https://code.jquery.com/jquery-2.2.3.min.js" integrity="sha256-a23g1Nt4dtEYOj7bR+vTu7+T8VP13humZFBJNIYoEJo=" crossorigin="anonymous"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js" integrity="sha384-0mSbJDEHialfmuBBQP6A4Qrprq5OVfW37PRR3j5ELqxss1yVqOtnepnHVP9aJ7xS" crossorigin="anonymous"></script>
+    <script src="https://code.jquery.com/ui/1.11.4/jquery-ui.min.js" integrity="sha256-xNjb53/rY+WmG+4L6tTl9m6PpqknWZvRt0rO1SRnJzw=" crossorigin="anonymous"></script>
+    <script src="script.js"></script>
+  </head>
+  <body>
+    <div class="container">
+      <div class="jumbotron">
+        <h1>Hotel booking form</h1>
+      </div>
+      <div id="bookings">
+        <div class="row">
+          <div class="col-md-2">
+            <h3>Firstname</h3>
+          </div>
+          <div class="col-md-2">
+            <h3>Surname</h3>
+          </div>
+          <div class="col-md-1">
+            <h3>Price</h3>
+          </div>
+          <div class="col-md-2">
+            <h3>Deposit</h3>
+          </div>
+          <div class="col-md-2">
+            <h3>Check-in</h3>
+          </div>
+          <div class="col-md-2">
+            <h3>Check-out</h3>
+          </div>
+          <div class="col-md-1"></div>
+        </div>
+      </div>
+      <div id="form">
+        <div class="row">
+          <div class="col-md-2">
+            <input id="firstname" class="input" />
+          </div>
+          <div class="col-md-2">
+            <input id="lastname" class="input"/>
+          </div>
+          <div class="col-md-1">
+            <input id="totalprice" class="input" style="width: 100%"/>
+          </div>
+          <div class="col-md-2">
+            <select id="depositpaid">
+              <option>true</option>
+              <option>false</option>
+            </select>
+          </div>
+          <div class="col-md-2">
+            <input id="checkin" class="datepicker input"/>
+          </div>
+          <div class="col-md-2">
+            <input id="checkout" class="datepicker input"/>
+          </div>
+          <div class="col-md-1">
+            <input type="button" value=" Save " onclick="createBooking()"/>
+          </div>
+        </div>
+      </div>
+    </div>
+  </body>
+</html>
