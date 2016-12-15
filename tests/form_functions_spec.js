@@ -41,7 +41,7 @@ describe('restful-booker - XML feature switch', function () {
     request(server)
       .post('/booking')
       .set('Content-type', 'application/x-www-form-urlencoded')
-      .send(payload)
+      .send(formurlencoded(payload))
       .expect(200)
       .expect(function(res){
         res.text.should.equal(formurlencoded({'bookingid': 1, 'booking': payload}));

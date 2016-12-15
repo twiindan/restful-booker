@@ -5,6 +5,7 @@ var router  = express.Router(),
     Booking = require('../models/booking'),
     Counter = require('../models/counters'),
     creator = require('../helpers/bookingcreator'),
+    view    = require('../views/views'),
     globalLogins = {};
 
 Booking.deleteAll(function(err){
@@ -25,6 +26,12 @@ Booking.deleteAll(function(err){
         }
       });
     })()
+  });
+});
+
+router.get('/', function(req, res, next){
+  view.index(function(render){
+    res.send(render);
   });
 });
 
