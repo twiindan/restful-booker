@@ -4,30 +4,8 @@ var router  = express.Router(),
     crypto = require('crypto'),
     Booking = require('../models/booking'),
     Counter = require('../models/counters'),
-    creator = require('../helpers/bookingcreator'),
     view    = require('../views/views'),
     globalLogins = {};
-
-Booking.deleteAll(function(err){
-  if(err) return console.error(err);
-
-  Counter.resetCounter(function() {
-    var count = 1;
-
-    (function createBooking(){
-      var newBooking = creator.createBooking()
-
-      Booking.create(newBooking, function(err, result){
-        if(err) return console.error(err);
-
-        if(count < 10){
-          count++;
-          createBooking();
-        }
-      });
-    })()
-  });
-});
 
 router.get('/', function(req, res, next){
   view.index(function(render){
@@ -85,24 +63,58 @@ router.get('/booking/:id',function(req, res, next){
   })
 });
 
+var validateAge = function(booking) {
+  switch (process.env.dob) {
+    case "boolean":
+      if(newBooking.dob.toString() === 'true'){
+        return true;
+      } else {
+        return false;
+      }
+      break;
+    case "string":
+      if(newBooking.dob === 'over21'){
+        return true;
+      } else {
+        return false;
+      }
+      break;
+    case "compare":
+      ageDifMs = Date.now() - new Date(newBooking.dob).getTime();
+      ageDate = new Date(ageDifMs);
+      age = Math.abs(ageDate.getUTCFullYear() - 1970);
+
+      if(age >= 21){
+        return true;
+      } else {
+        return false;
+      }
+      break;
+  }
+}
+
 router.post('/booking', function(req, res, next) {
   newBooking = req.body;
 
   if(req.headers['content-type'] === 'text/xml') newBooking = newBooking.booking;
 
-  Booking.create(newBooking, function(err, booking){
-    if(err)
-      res.sendStatus(500);
-    else {
-      var record = parse.bookingWithId(req, booking);
-
-      if(!record){
+  if(validateAge(newBooking)){
+    Booking.create(newBooking, function(err, booking){
+      if(err)
         res.sendStatus(500);
-      } else {
-        res.send(record);
+      else {
+        var record = parse.bookingWithId(req, booking);
+
+        if(!record){
+          res.sendStatus(500);
+        } else {
+          res.send(record);
+        }
       }
-    }
-  })
+    })
+  } else {
+    res.sendStatus(400);
+  }
 });
 
 router.put('/booking/:id', function(req, res, next) {

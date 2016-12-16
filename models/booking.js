@@ -10,6 +10,7 @@ var bookingSchema = mongoose.Schema({
     lastname: { type: String, required: true},
     totalprice: { type: Number, required: true},
     depositpaid: { type: Boolean, required: true},
+    dob: { type: mongoose.Schema.Types.Mixed, required: false},
     bookingdates: {
       checkin: { type: Date, required: true},
       checkout: { type: Date, required: true}

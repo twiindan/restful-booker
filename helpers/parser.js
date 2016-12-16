@@ -28,6 +28,10 @@ exports.booking = function(accept, rawBooking){
     }
   }
 
+  if(typeof(rawBooking.dob) !== 'undefined'){
+    booking.dob = rawBooking.dob;
+  }
+
   if(typeof(rawBooking.additionalneeds) !== 'undefined'){
     booking.additionalneeds = rawBooking.additionalneeds;
   }
@@ -57,6 +61,10 @@ exports.bookingWithId = function(req, rawBooking){
       'checkin' : dateFormat(rawBooking.bookingdates.checkin, "yyyy-mm-dd"),
       'checkout' : dateFormat(rawBooking.bookingdates.checkout, "yyyy-mm-dd")
     }
+  }
+
+  if(typeof(rawBooking.dob) !== 'undefined'){
+    booking.dob = rawBooking.dob;
   }
 
   if(typeof(rawBooking.additionalneeds) !== 'undefined'){
