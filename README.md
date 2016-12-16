@@ -11,6 +11,14 @@ A simple Node booking form for testing RESTful web services.
 3. Run ```npm install```
 4. Run ```npm start```
 
+# Using feature switching
+Restful-booker can be feature switched by setting environmental variables, such as:
+
+```
+export payload=json|xml|form
+export dob=boolean|string|compare
+```
+
 # API
 * [GET    /ping](https://github.com/mwinteringham/restful-booker#get-ping)
 * [GET    /booking](https://github.com/mwinteringham/restful-booker#get-booking)

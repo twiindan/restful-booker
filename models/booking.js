@@ -4,6 +4,8 @@ var mongoose = require('mongoose'),
 
 mongoose.connect('mongodb://localhost/restful-booker');
 
+mongoose.Promise = global.Promise;
+
 var bookingSchema = mongoose.Schema({
     bookingid: {type: Number},
     firstname: { type: String, required: true},
