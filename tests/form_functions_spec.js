@@ -7,9 +7,33 @@ var request      = require('supertest-as-promised'),
 var payload  = helpers.generateDobPayload('Sally', 'Brown', 111, true, 'Breakfast', '2013-02-01', '2013-02-04', 'over21'),
     payload2 = helpers.generateDobPayload('Geoff', 'White', 111, true, 'Breakfast', '2013-02-02', '2013-02-05', 'over21');
 
-describe('restful-booker - XML feature switch', function () {
+describe('restful-booker - Form feature switch', function () {
 
-  it('responds with an XML payload when GET /booking/{id} form feature switch', function(done){
+  it('responds with a query string payload when GET /booking form feature switch', function(done){
+    helpers.setEnv('form', 'string', function(server){
+      request(server)
+        .post('/booking')
+        .set('Content-type', 'application/x-www-form-urlencoded')
+        .send(formurlencoded(payload))
+        .then(function() {
+            return request(server)
+                    .post('/booking')
+                    .set('Content-type', 'application/x-www-form-urlencoded')
+                    .send(formurlencoded(payload2))
+        })
+        .then(function(){
+          request(server)
+            .get('/booking')
+            .expect(200)
+            .expect(function(res){
+              res.text.should.equal('0%5Bid%5D=1&1%5Bid%5D=2')
+            })
+            .end(done)
+        })
+    });
+  });
+
+  it('responds with an query string payload when GET /booking/{id} form feature switch', function(done){
     helpers.setEnv('form', 'string', function(server){
       request(server)
         .post('/booking')
@@ -24,7 +48,7 @@ describe('restful-booker - XML feature switch', function () {
     });
   });
 
-  it('responds with an XML payload when POST /booking form feature switch', function(done){
+  it('responds with an query string payload when POST /booking form feature switch', function(done){
     helpers.setEnv('form', 'string', function(server){
       request(server)
         .post('/booking')

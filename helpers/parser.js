@@ -21,6 +21,11 @@ exports.bookingids = function(req, rawBooking){
     case 'xml':
       return js2xmlparser('bookings', {'booking': payload});
       break;
+    case 'form':
+      return formurlencoded(payload);
+      break;
+    default:
+      return null;
   }
 }
 
