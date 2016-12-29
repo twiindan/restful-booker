@@ -5,15 +5,16 @@ var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
 var xmlparser = require('express-xml-bodyparser');
 var routes = require('./routes/index');
+var features = require('./helpers/features');
 
 var app = express();
 
-app.use(logger('dev'));
+//app.use(logger('dev'));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 app.use(express.static('public'));
 
-switch (process.env.payload) {
+switch (features.payloadFeature()) {
   case "json":
     app.use(bodyParser.json());
     break;

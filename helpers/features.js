@@ -5,3 +5,11 @@ exports.payloadFeature = function(){
     return 'json';
   }
 }
+
+exports.dobFeature = function(){
+  if(process.env.dob){
+    return process.env.dob;
+  } else {
+    return 'boolean';
+  }
+}

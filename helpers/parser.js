@@ -49,7 +49,7 @@ exports.booking = function(accept, rawBooking){
     booking.additionalneeds = rawBooking.additionalneeds;
   }
 
-  switch(process.env.payload){
+  switch(features.payloadFeature()){
     case 'xml':
       return js2xmlparser('booking', booking);
       break;
@@ -89,7 +89,7 @@ exports.bookingWithId = function(req, rawBooking){
     "booking" : booking
   }
 
-  switch(process.env.payload){
+  switch(features.payloadFeature()){
     case 'xml':
       return js2xmlparser('created-booking', payload);
       break;
@@ -105,7 +105,7 @@ exports.bookingWithId = function(req, rawBooking){
 }
 
 exports.token = function(token, callback){
-  switch (process.env.payload) {
+  switch (features.payloadFeature()) {
     case 'xml':
       return '<token>' + token + '</token>';
       break;

@@ -1,6 +1,7 @@
 var fs      = require('fs');
     header  = fs.readFileSync(__dirname + '/fixtures/header.html'),
-    footer  = fs.readFileSync(__dirname + '/fixtures/footer.html');
+    footer  = fs.readFileSync(__dirname + '/fixtures/footer.html'),
+    features = require('../helpers/features')
 
 exports.index = function(callback){
   var render = '       <div id="form">' +
@@ -21,7 +22,7 @@ exports.index = function(callback){
                '              </select>' +
                '            </div>';
 
-  switch (process.env.dob) {
+  switch (features.dobFeature()) {
     case 'boolean':
         render += '            <div class="col-md-1">' +
                   '              <input id="age" class="input" type="checkbox" value="true">' +
@@ -54,7 +55,7 @@ exports.index = function(callback){
             '          </div>' +
             '        </div>'
 
-  render += '\t<input type="hidden" id="payloadFlag" value="' + process.env.payload + '" />\n';
+  render += '\t<input type="hidden" id="payloadFlag" value="' + features.payloadFeature() + '" />\n';
 
   callback(header  + render + footer);
 }

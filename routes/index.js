@@ -5,6 +5,7 @@ var router  = express.Router(),
     Booking = require('../models/booking'),
     Counter = require('../models/counters'),
     view    = require('../views/views'),
+    features = require('../helpers/features'),
     globalLogins = {};
 
 router.get('/', function(req, res, next){
@@ -64,7 +65,7 @@ router.get('/booking/:id',function(req, res, next){
 });
 
 var validateAge = function(booking) {
-  switch (process.env.dob) {
+  switch (features.dobFeature()) {
     case "boolean":
       if(newBooking.dob.toString() === 'true'){
         return true;
