@@ -25,7 +25,34 @@ parseNumbers = function(str) {
 
 describe('restful-booker - XML feature switch', function () {
 
-  it('responds with an XML payload when GET /booking/{id} XML feature switch', function testGetWithXMLAccept(done){
+  it('responds with an XML payload when GET /booking XML feature switch', function(done){
+    helpers.setEnv('xml', 'string', function(server){
+      xmlPayload  = js2xmlparser('booking', payload);
+      xmlPayload2 = js2xmlparser('booking', payload2);
+
+      request(server)
+        .post('/booking')
+        .set('Content-type', 'text/xml')
+        .send(xmlPayload)
+        .then(function() {
+            return request(server)
+                    .post('/booking')
+                    .set('Content-type', 'text/xml')
+                    .send(xmlPayload2)
+        })
+        .then(function(){
+          request(server)
+            .get('/booking')
+            .expect(200)
+            .expect(function(res){
+              res.text.should.equal('<?xml version="1.0" encoding="UTF-8"?>\n<bookings>\n\t<booking>\n\t\t<id>1</id>\n\t</booking>\n\t<booking>\n\t\t<id>2</id>\n\t</booking>\n</bookings>')
+            })
+            .end(done)
+        })
+    });
+  });
+
+  it('responds with an XML payload when GET /booking/{id} XML feature switch', function(done){
     helpers.setEnv('xml', 'string', function(server){
       xmlPayload = js2xmlparser('booking', payload);
 
@@ -45,7 +72,7 @@ describe('restful-booker - XML feature switch', function () {
     });
   });
 
-  it('responds with an XML payload when POST /booking XML feature switch', function testGetWithXMLAccept(done){
+  it('responds with an XML payload when POST /booking XML feature switch', function(done){
     helpers.setEnv('xml', 'string', function(server){
       var xmlPayload = js2xmlparser('booking', payload);
       var xmlResponsePayload = js2xmlparser('created-booking', { "bookingid": 1, "booking": payload })
@@ -65,7 +92,7 @@ describe('restful-booker - XML feature switch', function () {
       });
   });
 
-  it('responds with a 200 and a token to use when POSTing a valid credential', function testAuthReturnsToken(done){
+  it('responds with a 200 and a token to use when POSTing a valid credential', function(done){
     helpers.setEnv('xml', 'string', function(server){
       request(server)
         .post('/auth')
@@ -79,7 +106,7 @@ describe('restful-booker - XML feature switch', function () {
     });
   });
 
-  it('responds with a 200 and a message informing of login failed when POSTing invalid credential', function testAuthReturnsError(done){
+  it('responds with a 200 and a message informing of login failed when POSTing invalid credential', function(done){
     helpers.setEnv('xml', 'string', function(server){
       request(server)
         .post('/auth')

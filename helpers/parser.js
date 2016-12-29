@@ -1,19 +1,27 @@
 var js2xmlparser = require("js2xmlparser"),
     dateFormat = require('dateformat'),
-    formurlencoded = require('form-urlencoded');
+    formurlencoded = require('form-urlencoded'),
+    features = require('./features');
 
 exports.bookingids = function(req, rawBooking){
   var payload = [];
 
   rawBooking.forEach(function(b){
     var tmpBooking = {
-      bookingid: b.bookingid,
+      id: b.bookingid,
     }
 
     payload.push(tmpBooking);
   });
 
-  return payload;
+  switch (features.payloadFeature()) {
+    case 'json':
+      return payload;
+      break;
+    case 'xml':
+      return js2xmlparser('bookings', {'booking': payload});
+      break;
+  }
 }
 
 exports.booking = function(accept, rawBooking){

@@ -43,8 +43,8 @@ describe('restful-booker - GET /booking - JSON feature switch', function () {
             .get('/booking')
             .expect(200)
             .expect(function(res){
-              res.body[0].should.have.property('bookingid').and.match(/[0-9]/);
-              res.body[1].should.have.property('bookingid').and.match(/[0-9]/);
+              res.body[0].should.have.property('id').and.match(/[0-9]/);
+              res.body[1].should.have.property('id').and.match(/[0-9]/);
             })
             .end(done);
         });
@@ -65,7 +65,7 @@ describe('restful-booker - GET /booking - JSON feature switch', function () {
             .get('/booking?firstname=Geoff')
             .expect(200)
             .expect(function(res){
-              res.body[0].should.have.property('bookingid').and.equal(2);
+              res.body[0].should.have.property('id').and.equal(2);
             })
             .end(done)
         })
@@ -86,7 +86,7 @@ describe('restful-booker - GET /booking - JSON feature switch', function () {
             .get('/booking?lastname=White')
             .expect(200)
             .expect(function(res){
-              res.body[0].should.have.property('bookingid').and.equal(2);
+              res.body[0].should.have.property('id').and.equal(2);
             })
             .end(done)
         })
@@ -107,7 +107,7 @@ describe('restful-booker - GET /booking - JSON feature switch', function () {
             .get('/booking?checkin=2013-02-01')
             .expect(200)
             .expect(function(res){
-              res.body[0].should.have.property('bookingid').and.equal(2);
+              res.body[0].should.have.property('id').and.equal(2);
             })
             .end(done)
         })
@@ -128,7 +128,7 @@ describe('restful-booker - GET /booking - JSON feature switch', function () {
             .get('/booking?checkout=2013-02-05')
             .expect(200)
             .expect(function(res){
-              res.body[0].should.have.property('bookingid').and.equal(1);
+              res.body[0].should.have.property('id').and.equal(1);
             })
             .end(done)
         })
@@ -153,7 +153,7 @@ describe('restful-booker - GET /booking - JSON feature switch', function () {
             .get('/booking?checkin=2013-02-01&checkout=2013-02-06')
             .expect(200)
             .expect(function(res){
-              res.body[0].should.have.property('bookingid').and.equal(2);
+              res.body[0].should.have.property('id').and.equal(2);
             })
             .end(done)
         });
@@ -178,7 +178,7 @@ describe('restful-booker - GET /booking - JSON feature switch', function () {
             .get('/booking?firstname=Geoff&lastname=White&checkin=2013-02-01&checkout=2013-02-06')
             .expect(200)
             .expect(function(res){
-              res.body[0].should.have.property('bookingid').and.equal(2);
+              res.body[0].should.have.property('id').and.equal(2);
             })
             .end(done)
         })
