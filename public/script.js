@@ -13,11 +13,27 @@ $( document ).ready(function() {
 
 var populateBookings = function(){
   $.get('/booking', function(data) {
-      var limit = data.length - 1;
-      var count = 0;
+      var payload,
+          limit,
+          count = 0;
+
+      switch (payloadFlag) {
+        case 'json':
+          payload = data;
+          limit = payload.length - 1;
+          break;
+        case 'xml':
+          payload = x2js.xml_str2json(data)['bookings']['booking'];
+          limit = payload.length - 1;
+          break;
+        case 'form':
+          payload = form2Json(data);
+          limit = Object.keys(payload).length - 1;
+          break;
+      }
 
       (getBooking = function(){
-        var bookingid = data[count].bookingid;
+        var bookingid = payload[count].id;
 
         $.get('/booking/' + bookingid, function(booking){
           if(payloadFlag === "xml") booking = x2js.xml_str2json(booking).booking;
