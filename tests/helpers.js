@@ -1,8 +1,9 @@
 var mongoose = require('mongoose');
 
-exports.setEnv = function(payload, dobValid, callback){
+exports.setEnv = function(payload, dobValid, index, callback){
   process.env['payload'] = payload;
   process.env['dob'] = dobValid;
+  process.env['index'] = index;
   delete require.cache[require.resolve('../app')];
   var server = require('../app');
 

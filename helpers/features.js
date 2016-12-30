@@ -13,3 +13,11 @@ exports.dobFeature = function(){
     return 'boolean';
   }
 }
+
+exports.indexFeature = function() {
+  if(process.env.index){
+    return process.env.index;
+  } else {
+    return 'full';
+  }
+}

@@ -37,6 +37,13 @@ router.get('/booking', function(req, res, next) {
     query["bookingdates.checkout"] = {$lt: new Date(req.query.checkout).toISOString()}
   }
 
+  if(features.indexFeature() === 'page' && typeof(req.query.page) != 'undefined'){
+    var greaterThan = (req.query.page * 10) - 10;
+    var lessThan = (req.query.page * 10) + 1;
+
+    query.bookingid = {$gt: greaterThan, $lt: lessThan}
+  }
+
   Booking.getIDs(query, function(err, record){
     var booking = parse.bookingids(req, record);
 
