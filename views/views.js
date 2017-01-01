@@ -4,23 +4,29 @@ var fs      = require('fs');
     features = require('../helpers/features')
 
 exports.index = function(callback){
-  var render = '       <div id="form">' +
-               '          <div class="row">' +
-               '            <div class="col-md-2">' +
-               '              <input id="firstname" class="input" />' +
-               '            </div>' +
-               '            <div class="col-md-2">' +
-               '              <input id="lastname" class="input"/>' +
-               '            </div>' +
-               '            <div class="col-md-1">' +
-               '              <input id="totalprice" class="input" style="width: 100%"/>' +
-               '            </div>' +
-               '            <div class="col-md-1">' +
-               '              <select id="depositpaid">' +
-               '                <option>true</option>' +
-               '                <option>false</option>' +
-               '              </select>' +
-               '            </div>';
+  var render = '       <div class="row">' +
+               '         <div class="col-md-1" id="prev"><a href="">Prev</a></div>' +
+               '         <div class="col-md-5"></div>' +
+               '         <div class="col-md-5"></div>' +
+               '         <div class="col-md-1" id="next"><a href="">Next</a></div>' +
+               '       </div>' +
+               '       <div id="form">' +
+               '         <div class="row">' +
+               '           <div class="col-md-2">' +
+               '             <input id="firstname" class="input" />' +
+               '           </div>' +
+               '           <div class="col-md-2">' +
+               '             <input id="lastname" class="input"/>' +
+               '           </div>' +
+               '           <div class="col-md-1">' +
+               '             <input id="totalprice" class="input" style="width: 100%"/>' +
+               '           </div>' +
+               '           <div class="col-md-1">' +
+               '             <select id="depositpaid">' +
+               '               <option>true</option>' +
+               '               <option>false</option>' +
+               '             </select>' +
+               '           </div>';
 
   switch (features.dobFeature()) {
     case 'boolean':
@@ -55,7 +61,8 @@ exports.index = function(callback){
             '          </div>' +
             '        </div>'
 
-  render += '\t<input type="hidden" id="payloadFlag" value="' + features.payloadFeature() + '" />\n';
+  render += '\t<input type="hidden" id="payloadFlag" value="' + features.payloadFeature() + '" />\n' +
+            '\t<input type="hidden" id="indexFlag" value="' + features.indexFeature() + '" />\n';
 
   callback(header  + render + footer);
 }

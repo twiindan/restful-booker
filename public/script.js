@@ -1,18 +1,37 @@
 var x2js = new X2JS(),
-    payloadFlag;
+    payloadFlag,
+    indexFlag;
 
 $( document ).ready(function() {
+  payloadFlag = $('#payloadFlag').val();
+  indexFlag = $('#indexFlag').val();
+
+  currentPage = parseInt(getUrlVars()['page'])
+
+  $('#prev a').attr('href', '/?page=' + (currentPage - 1));
+  $('#next a').attr('href', '/?page=' + (currentPage + 1));
+
+  if(getUrlVars()['page'] === '1'){
+    $('#prev').css('visibility', 'hidden')
+  }
+
   populateBookings();
 
   $('.datepicker').datepicker({
     dateFormat: 'yy-mm-dd'
   });
-
-  payloadFlag = $('#payloadFlag').val();
 });
 
 var populateBookings = function(){
-  $.get('/booking', function(data) {
+  var path;
+
+  if(indexFlag === 'page'){
+    path = '/booking?page=' + getUrlVars()['page'];
+  } else {
+    path = '/booking';
+  }
+
+  $.get(path, function(data) {
       var payload,
           limit,
           count = 0;
@@ -30,6 +49,10 @@ var populateBookings = function(){
           payload = form2Json(data);
           limit = Object.keys(payload).length - 1;
           break;
+      }
+
+      if(limit < 9 && indexFlag === 'page'){
+        $('#next').css('visibility', 'hidden');
       }
 
       (getBooking = function(){
@@ -109,7 +132,20 @@ var deleteBooking = function(id){
         authorization: 'Basic YWRtaW46cGFzc3dvcmQxMjM='
     },
     success: function(data){
-      $('#' + id).remove();
+      location.reload();
     }
   })
+}
+
+function getUrlVars()
+{
+    var vars = [], hash;
+    var hashes = window.location.href.slice(window.location.href.indexOf('?') + 1).split('&');
+    for(var i = 0; i < hashes.length; i++)
+    {
+        hash = hashes[i].split('=');
+        vars.push(hash[0]);
+        vars[hash[0]] = hash[1];
+    }
+    return vars;
 }

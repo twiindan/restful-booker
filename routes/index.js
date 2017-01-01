@@ -10,7 +10,11 @@ var router  = express.Router(),
 
 router.get('/', function(req, res, next){
   view.index(function(render){
-    res.send(render);
+    if(features.indexFeature() === 'page' && typeof(req.query.page) == 'undefined'){
+      res.redirect('/?page=1');
+    } else {
+      res.send(render);
+    }
   });
 });
 
@@ -38,21 +42,28 @@ router.get('/booking', function(req, res, next) {
   }
 
   if(features.indexFeature() === 'page' && typeof(req.query.page) != 'undefined'){
-    var greaterThan = (req.query.page * 10) - 10;
-    var lessThan = (req.query.page * 10) + 1;
+    var skipCount = (req.query.page * 10) - 10;
 
-    query.bookingid = {$gt: greaterThan, $lt: lessThan}
+    Booking.getIDsLimit(query, skipCount, function(err, record){
+      var booking = parse.bookingids(req, record);
+
+      if(!booking){
+        res.sendStatus(500);
+      } else {
+        res.send(booking);
+      }
+    })
+  } else {
+    Booking.getIDs(query, function(err, record){
+      var booking = parse.bookingids(req, record);
+
+      if(!booking){
+        res.sendStatus(500);
+      } else {
+        res.send(booking);
+      }
+    })
   }
-
-  Booking.getIDs(query, function(err, record){
-    var booking = parse.bookingids(req, record);
-
-    if(!booking){
-      res.sendStatus(500);
-    } else {
-      res.send(booking);
-    }
-  })
 });
 
 router.get('/booking/:id',function(req, res, next){

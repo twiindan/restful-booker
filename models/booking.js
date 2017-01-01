@@ -31,8 +31,18 @@ bookingSchema.pre('save', function(next) {
     });
 });
 
+exports.getIDsLimit = function(query, skipCount, callback){
+  Booking.find(query).select('bookingid -_id').sort({'bookingid': 1}).limit(10).skip(skipCount).exec(function(err, booking){
+    if(err){
+      callback(err);
+    } else {
+      callback(null, booking);
+    }
+  });
+},
+
 exports.getIDs = function(query, callback){
-  Booking.find(query).select('bookingid -_id').exec(function(err, booking){
+  Booking.find(query).select('bookingid -_id').sort({'bookingid': 1}).exec(function(err, booking){
     if(err){
       callback(err);
     } else {
