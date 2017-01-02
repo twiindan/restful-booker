@@ -11,7 +11,7 @@ $( document ).ready(function() {
   $('#prev a').attr('href', '/?page=' + (currentPage - 1));
   $('#next a').attr('href', '/?page=' + (currentPage + 1));
 
-  if(getUrlVars()['page'] === '1'){
+  if(getUrlVars()['page'] === '1' || indexFlag != 'page'){
     $('#prev').css('visibility', 'hidden')
   }
 
@@ -51,7 +51,7 @@ var populateBookings = function(){
           break;
       }
 
-      if(limit < 9 && indexFlag === 'page'){
+      if(limit < 9 || indexFlag != 'page'){
         $('#next').css('visibility', 'hidden');
       }
 
