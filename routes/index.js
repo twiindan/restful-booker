@@ -6,6 +6,7 @@ var router  = express.Router(),
     Counter = require('../models/counters'),
     view    = require('../views/views'),
     features = require('../helpers/features'),
+    validator = require('../helpers/validator'),
     globalLogins = {};
 
 router.get('/', function(req, res, next){
@@ -82,42 +83,12 @@ router.get('/booking/:id',function(req, res, next){
   })
 });
 
-var validateAge = function(booking) {
-  switch (features.dobFeature()) {
-    case "boolean":
-      if(newBooking.dob.toString() === 'true'){
-        return true;
-      } else {
-        return false;
-      }
-      break;
-    case "string":
-      if(newBooking.dob === 'over21'){
-        return true;
-      } else {
-        return false;
-      }
-      break;
-    case "compare":
-      ageDifMs = Date.now() - new Date(newBooking.dob).getTime();
-      ageDate = new Date(ageDifMs);
-      age = Math.abs(ageDate.getUTCFullYear() - 1970);
-
-      if(age >= 21){
-        return true;
-      } else {
-        return false;
-      }
-      break;
-  }
-}
-
 router.post('/booking', function(req, res, next) {
   newBooking = req.body;
 
   if(req.headers['content-type'] === 'text/xml') newBooking = newBooking.booking;
 
-  if(validateAge(newBooking)){
+  if(validator.validateAge(newBooking)){
     Booking.create(newBooking, function(err, booking){
       if(err)
         res.sendStatus(500);
@@ -142,21 +113,25 @@ router.put('/booking/:id', function(req, res, next) {
 
     if(req.headers['content-type'] === 'text/xml') updatedBooking = updatedBooking.booking;
 
-    Booking.update(req.params.id, updatedBooking, function(err){
-      Booking.get(req.params.id, function(err, record){
-        if(record){
-          var booking = parse.booking(req.headers.accept, record);
+    if(validator.validateBooking(updatedBooking)){
+      Booking.update(req.params.id, updatedBooking, function(err){
+        Booking.get(req.params.id, function(err, record){
+          if(record){
+            var booking = parse.booking(req.headers.accept, record);
 
-          if(!booking){
-            res.sendStatus(500);
+            if(!booking){
+              res.sendStatus(500);
+            } else {
+              res.send(booking);
+            }
           } else {
-            res.send(booking);
+            res.sendStatus(405);
           }
-        } else {
-          res.sendStatus(405);
-        }
-      })
-    })
+        })
+      });
+    } else {
+      res.sendStatus(400);
+    }
   } else {
     res.sendStatus(403);
   }

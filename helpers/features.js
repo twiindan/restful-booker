@@ -21,3 +21,11 @@ exports.indexFeature = function() {
     return 'full';
   }
 }
+
+exports.editFeature = function(){
+  if(process.env.edit){
+    return process.env.edit;
+  } else {
+    return 'full';
+  }
+}

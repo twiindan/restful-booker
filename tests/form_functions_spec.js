@@ -10,7 +10,7 @@ var payload  = helpers.generateDobPayload('Sally', 'Brown', 111, true, 'Breakfas
 describe('restful-booker - Form feature switch', function () {
 
   it('responds with a query string payload when GET /booking form feature switch', function(done){
-    helpers.setEnv('form', 'string', 'full', function(server){
+    helpers.setEnv('form', 'string', 'full', 'full', function(server){
       request(server)
         .post('/booking')
         .set('Content-type', 'application/x-www-form-urlencoded')
@@ -34,7 +34,7 @@ describe('restful-booker - Form feature switch', function () {
   });
 
   it('responds with an query string payload when GET /booking/{id} form feature switch', function(done){
-    helpers.setEnv('form', 'string', 'full', function(server){
+    helpers.setEnv('form', 'string', 'full', 'full', function(server){
       request(server)
         .post('/booking')
         .set('Content-type', 'application/x-www-form-urlencoded')
@@ -49,7 +49,7 @@ describe('restful-booker - Form feature switch', function () {
   });
 
   it('responds with an query string payload when POST /booking form feature switch', function(done){
-    helpers.setEnv('form', 'string', 'full', function(server){
+    helpers.setEnv('form', 'string', 'full', 'full', function(server){
       request(server)
         .post('/booking')
         .set('Content-type', 'application/x-www-form-urlencoded')
@@ -63,7 +63,7 @@ describe('restful-booker - Form feature switch', function () {
   });
 
   it('responds with a 200 and a token to use when POSTing a valid credential', function(done){
-    helpers.setEnv('form', 'string', 'full', function(server){
+    helpers.setEnv('form', 'string', 'full', 'full', function(server){
       request(server)
         .post('/auth')
         .set('Content-type', 'application/x-www-form-urlencoded')
@@ -77,7 +77,7 @@ describe('restful-booker - Form feature switch', function () {
   });
 
   it('responds with a 200 and a message informing of login failed when POSTing invalid credential', function(done){
-    helpers.setEnv('form', 'string', 'full', function(server){
+    helpers.setEnv('form', 'string', 'full', 'full', function(server){
       request(server)
         .post('/auth')
         .set('Content-type', 'application/x-www-form-urlencoded')
@@ -89,32 +89,5 @@ describe('restful-booker - Form feature switch', function () {
         .end(done)
     });
   });
-
-  // it('responds with an XML payload when PUT /booking', function(done){
-  //   helpers.setEnv('form', 'string', function(server){
-  //     var token;
-  //
-  //     request(server)
-  //       .post('/auth')
-  //       .set('Content-type', 'application/x-www-form-urlencoded')
-  //       .send('username=admin&password=password123')
-  //       .then(function(res){
-  //         token = res.text;
-  //         return request(server)
-  //           .post('/booking')
-  //           .set('Content-type', 'application/x-www-form-urlencoded')
-  //           .send(formurlencoded(payload))
-  //       })
-  //       .then(function(res){
-  //         request(server)
-  //           .put('/booking/' + res.text.match(/[0-9]/)[0])
-  //           .set('Cookie', 'token=' + token)
-  //           .set('Content-type', 'application/x-www-form-urlencoded')
-  //           .send(formurlencoded(payload2))
-  //           .expect(200)
-  //           .expect(formurlencoded(payload2), done);
-  //       })
-  //   });
-  // });
 
 });

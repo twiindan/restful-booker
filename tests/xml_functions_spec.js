@@ -26,7 +26,7 @@ parseNumbers = function(str) {
 describe('restful-booker - XML feature switch', function () {
 
   it('responds with an XML payload when GET /booking XML feature switch', function(done){
-    helpers.setEnv('xml', 'string', 'full', function(server){
+    helpers.setEnv('xml', 'string', 'full', 'full', function(server){
       xmlPayload  = js2xmlparser('booking', payload);
       xmlPayload2 = js2xmlparser('booking', payload2);
 
@@ -53,7 +53,7 @@ describe('restful-booker - XML feature switch', function () {
   });
 
   it('responds with an XML payload when GET /booking/{id} XML feature switch', function(done){
-    helpers.setEnv('xml', 'string', 'full', function(server){
+    helpers.setEnv('xml', 'string', 'full', 'full', function(server){
       xmlPayload = js2xmlparser('booking', payload);
 
       request(server)
@@ -73,7 +73,7 @@ describe('restful-booker - XML feature switch', function () {
   });
 
   it('responds with an XML payload when POST /booking XML feature switch', function(done){
-    helpers.setEnv('xml', 'string', 'full', function(server){
+    helpers.setEnv('xml', 'string', 'full', 'full', function(server){
       var xmlPayload = js2xmlparser('booking', payload);
       var xmlResponsePayload = js2xmlparser('created-booking', { "bookingid": 1, "booking": payload })
 
@@ -93,7 +93,7 @@ describe('restful-booker - XML feature switch', function () {
   });
 
   it('responds with a 200 and a token to use when POSTing a valid credential', function(done){
-    helpers.setEnv('xml', 'string', 'full', function(server){
+    helpers.setEnv('xml', 'string', 'full', 'full', function(server){
       request(server)
         .post('/auth')
         .set('Content-type', 'text/xml')
@@ -107,7 +107,7 @@ describe('restful-booker - XML feature switch', function () {
   });
 
   it('responds with a 200 and a message informing of login failed when POSTing invalid credential', function(done){
-    helpers.setEnv('xml', 'string', 'full', function(server){
+    helpers.setEnv('xml', 'string', 'full', 'full', function(server){
       request(server)
         .post('/auth')
         .set('Content-type', 'text/xml')
@@ -119,39 +119,5 @@ describe('restful-booker - XML feature switch', function () {
         .end(done)
     });
   });
-
-  // it('responds with an XML payload when PUT /booking', function testPutWithXMLAccept(done){
-  //   helpers.setEnv('xml', 'string', function(server){
-  //     xmlPayload = js2xmlparser('booking', payload);
-  //     xmlPayload2 = js2xmlparser('booking', payload2);
-  //
-  //     var token;
-  //
-  //     request(server)
-  //       .post('/auth')
-  //       .set('Content-type', 'text/xml')
-  //       .send('<auth><username>admin</username><password>password123</password></auth>')
-  //       .then(function(res){
-  //         xml2js(res.text, {explicitArray: false}, function (err, result) {
-  //           token = result.token
-  //         });
-  //         return request(server)
-  //           .post('/booking')
-  //           .set('Content-type', 'text/xml')
-  //           .send(xmlPayload)
-  //       })
-  //       .then(function(res){
-  //         return xml2js(res.text, {explicitArray: false, valueProcessors: [parseNumbers, parseBooleans]}, function (err, result) {
-  //           request(server)
-  //             .put('/booking/' + result['created-booking'].bookingid)
-  //             .set('Cookie', 'token=' + token)
-  //             .set('Content-type', 'text/xml')
-  //             .send(xmlPayload2)
-  //             .expect(200)
-  //             .expect(xmlPayload2, done);
-  //         });
-  //       });
-  //     });
-  // });
 
 });
