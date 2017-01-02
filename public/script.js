@@ -8,6 +8,7 @@ $( document ).ready(function() {
 
   currentPage = parseInt(getUrlVars()['page'])
 
+  $('#editModal').modal({ show: false})
   $('#prev a').attr('href', '/?page=' + (currentPage - 1));
   $('#next a').attr('href', '/?page=' + (currentPage + 1));
 
@@ -63,7 +64,8 @@ var populateBookings = function(){
           if(payloadFlag === "form") booking = form2Json(booking);
 
           $('#bookings')
-            .append('<div class="row" id=' + bookingid + '><div class="col-md-2"><p>' + booking.firstname + '</p></div><div class="col-md-2"><p>' + booking.lastname + '</p></div><div class="col-md-1"><p>' + booking.totalprice + '</p></div><div class="col-md-1"><p>' + booking.depositpaid + '</p></div><div class="col-md-1"><p>' + booking.dob + '</p></div><div class="col-md-2"><p>' + booking.bookingdates.checkin + '</p></div><div class="col-md-2"><p>' + booking.bookingdates.checkout + '</p></div><div class="col-md-1"><input type="button" onclick="deleteBooking(' + bookingid + ')" value="Delete"/></div></div>');
+            .append('<div class="row" id=' + bookingid + '><div class="col-md-2"><p>' + booking.firstname + '</p></div><div class="col-md-2"><p>' + booking.lastname + '</p></div><div class="col-md-1"><p>' + booking.totalprice + '</p></div><div class="col-md-1"><p>' + booking.depositpaid + '</p></div><div class="col-md-1"><p>' + booking.dob + '</p></div><div class="col-md-2"><p>' + booking.bookingdates.checkin + '</p></div><div class="col-md-2"><p>' + booking.bookingdates.checkout +
+                    '</p></div><div class="col-md-1"><input type="button" value="Edit" onclick="showEditBooking(' + bookingid + ')" /> <input type="button" onclick="deleteBooking(' + bookingid + ')" value="Delete"/></div></div>');
         });
 
         if(count < limit){
@@ -114,7 +116,8 @@ var createBooking = function(){
 
       $('.input').val('');
         $('#bookings')
-          .append('<div class="row" id=' + data.bookingid + '><div class="col-md-2"><p>' + data.booking.firstname + '</p></div><div class="col-md-2"><p>' + data.booking.lastname + '</p></div><div class="col-md-1"><p>' + data.booking.totalprice + '</p></div><div class="col-md-1"><p>' + data.booking.depositpaid + '</p></div><div class="col-md-1"><p>' + data.booking.dob + '</p></div><div class="col-md-2"><p>' + data.booking.bookingdates.checkin + '</p></div><div class="col-md-2"><p>' + data.booking.bookingdates.checkout + '</p></div><div class="col-md-1"><input type="button" onclick="deleteBooking(' + data.bookingid + ')" value="Delete"/></div></div>');
+          .append('<div class="row" id=' + data.bookingid + '><div class="col-md-2"><p>' + data.booking.firstname + '</p></div><div class="col-md-2"><p>' + data.booking.lastname + '</p></div><div class="col-md-1"><p>' + data.booking.totalprice + '</p></div><div class="col-md-1"><p>' + data.booking.depositpaid + '</p></div><div class="col-md-1"><p>' + data.booking.dob + '</p></div><div class="col-md-2"><p>' + data.booking.bookingdates.checkin +
+                  '</p></div><div class="col-md-2"><p>' + data.booking.bookingdates.checkout + '</p></div><div class="col-md-1"><input type="button" onclick="showEditBooking(' + data.bookingid + ')" value="Edit" /> <input type="button" onclick="deleteBooking(' + data.bookingid + ')" value="Delete"/></div></div>');
     },
     statusCode: {
       400: function() {
@@ -135,6 +138,34 @@ var deleteBooking = function(id){
       location.reload();
     }
   })
+}
+
+var showEditBooking = function(id){
+  $('#editModal').modal({'show' : true});
+
+  $.get('/booking/' + id, function(booking){
+    if(payloadFlag === "xml") booking = x2js.xml_str2json(booking).booking;
+    if(payloadFlag === "form") booking = form2Json(booking);
+
+    $('#editBookingModal #firstname').val(booking.firstname);
+    $('#editBookingModal #lastname').val(booking.lastname);
+    $('#editBookingModal #totalprice').val(booking.totalprice);
+    $('#editBookingModal #depositpaid option[value=' + booking.depositpaid + ']').attr('selected', true);
+
+    var dobField = $('#editBookingModal #age');
+
+    switch (dobField.attr('type')) {
+      case 'checkbox':
+        dobField.attr("checked", booking.dob);
+        break;
+      default:
+        dobField.val(booking.dob);
+        break;
+    }
+
+    $('#editBookingModal #checkin').val(booking.bookingdates.checkin);
+    $('#editBookingModal #checkout').val(booking.bookingdates.checkout);
+  });
 }
 
 function getUrlVars()
