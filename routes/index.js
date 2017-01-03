@@ -108,12 +108,12 @@ router.post('/booking', function(req, res, next) {
 });
 
 router.put('/booking/:id', function(req, res, next) {
-  if(globalLogins[req.cookies.token] || req.headers.authorization == 'Basic YWRtaW46cGFzc3dvcmQxMjM='){
+  // if(globalLogins[req.cookies.token] || req.headers.authorization == 'Basic YWRtaW46cGFzc3dvcmQxMjM='){
     updatedBooking = req.body;
 
     if(req.headers['content-type'] === 'text/xml') updatedBooking = updatedBooking.booking;
 
-    if(validator.validateBooking(updatedBooking)){
+    if(validator.validateBooking(updatedBooking) && validator.validateAge(newBooking)){
       Booking.update(req.params.id, updatedBooking, function(err){
         Booking.get(req.params.id, function(err, record){
           if(record){
@@ -132,9 +132,9 @@ router.put('/booking/:id', function(req, res, next) {
     } else {
       res.sendStatus(400);
     }
-  } else {
-    res.sendStatus(403);
-  }
+  // } else {
+  //   res.sendStatus(403);
+  // }
 });
 
 router.delete('/booking/:id', function(req, res, next) {

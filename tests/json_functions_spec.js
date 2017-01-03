@@ -333,30 +333,30 @@ describe('restful-booker POST /auth - JSON feature switch', function(){
 
 describe('restful-booker - PUT /booking - JSON feature switch', function () {
 
-  it('responds with a 403 when no token is sent', function(done){
-    helpers.setEnv('json', 'string', 'full', 'full', function(server){
-      request(server)
-        .put('/booking/1')
-        .expect(403, done);
-    });
-  });
-
-  it('responds with a 403 when not authorised', function(done){
-    helpers.setEnv('json', 'string', 'full', 'full', function(server){
-      request(server)
-        .post('/auth')
-        .send({'username': 'nmida', 'password': '321drowssap'})
-        .expect(200)
-        .then(function(res){
-          request(server)
-            .put('/booking/1')
-            .set('Accept', 'application/json')
-            .set('Cookie', 'token=' + res.body.token)
-            .send(payload2)
-            .expect(403, done)
-        })
-    });
-  });
+  // it('responds with a 403 when no token is sent', function(done){
+  //   helpers.setEnv('json', 'string', 'full', 'full', function(server){
+  //     request(server)
+  //       .put('/booking/1')
+  //       .expect(403, done);
+  //   });
+  // });
+  //
+  // it('responds with a 403 when not authorised', function(done){
+  //   helpers.setEnv('json', 'string', 'full', 'full', function(server){
+  //     request(server)
+  //       .post('/auth')
+  //       .send({'username': 'nmida', 'password': '321drowssap'})
+  //       .expect(200)
+  //       .then(function(res){
+  //         request(server)
+  //           .put('/booking/1')
+  //           .set('Accept', 'application/json')
+  //           .set('Cookie', 'token=' + res.body.token)
+  //           .send(payload2)
+  //           .expect(403, done)
+  //       })
+  //   });
+  // });
 
   it('responds with a 200 and an updated payload using auth', function(done){
     helpers.setEnv('json', 'string', 'full', 'full', function(server){

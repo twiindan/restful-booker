@@ -16,11 +16,15 @@ $( document ).ready(function() {
     $('#prev').css('visibility', 'hidden')
   }
 
-  populateBookings();
-
   $('.datepicker').datepicker({
     dateFormat: 'yy-mm-dd'
   });
+
+  $('.editDatepicker').datepicker({
+    dateFormat: 'yy-mm-dd'
+  });
+
+  populateBookings();
 });
 
 var populateBookings = function(){
@@ -83,14 +87,14 @@ var getRandomInt = function(min, max) {
 var createBooking = function(){
   var requestDetails = {},
       booking = {
-        "firstname": $('#firstname').val(),
-        "lastname": $('#lastname').val(),
-        "totalprice": $('#totalprice').val(),
-        "depositpaid": $('#depositpaid').val(),
-        "dob": $('#age').val(),
+        "firstname": $('#createFirstname').val(),
+        "lastname": $('#createLastname').val(),
+        "totalprice": $('#createTotalprice').val(),
+        "depositpaid": $('#createDepositpaid').val(),
+        "dob": $('#createAge').val(),
         "bookingdates": {
-            "checkin": $('#checkin').val(),
-            "checkout": $('#checkout').val()
+            "checkin": $('#createCheckin').val(),
+            "checkout": $('#createCheckout').val()
         },
       };
 
@@ -147,12 +151,13 @@ var showEditBooking = function(id){
     if(payloadFlag === "xml") booking = x2js.xml_str2json(booking).booking;
     if(payloadFlag === "form") booking = form2Json(booking);
 
-    $('#editBookingModal #firstname').val(booking.firstname);
-    $('#editBookingModal #lastname').val(booking.lastname);
-    $('#editBookingModal #totalprice').val(booking.totalprice);
-    $('#editBookingModal #depositpaid option[value=' + booking.depositpaid + ']').attr('selected', true);
+    $('#editBookingId').val(id);
+    $('#editFirstname').val(booking.firstname);
+    $('#editLastname').val(booking.lastname);
+    $('#editTotalprice').val(booking.totalprice);
+    $('#editDepositpaid option[value=' + booking.depositpaid + ']').attr('selected', true);
 
-    var dobField = $('#editBookingModal #age');
+    var dobField = $('#editAge');
 
     switch (dobField.attr('type')) {
       case 'checkbox':
@@ -163,9 +168,53 @@ var showEditBooking = function(id){
         break;
     }
 
-    $('#editBookingModal #checkin').val(booking.bookingdates.checkin);
-    $('#editBookingModal #checkout').val(booking.bookingdates.checkout);
+    $('#editCheckin').val(booking.bookingdates.checkin);
+    $('#editCheckout').val(booking.bookingdates.checkout);
   });
+}
+
+var editBooking = function(){
+  var requestDetails = {},
+      booking = {
+        "firstname": $('#editFirstname').val(),
+        "lastname": $('#editLastname').val(),
+        "totalprice": $('#editTotalprice').val(),
+        "depositpaid": $('#editDepositpaid').val(),
+        "dob": $('#editAge').val(),
+        "bookingdates": {
+            "checkin": $('#editCheckin').val(),
+            "checkout": $('#editCheckout').val()
+        },
+      },
+      bookingId = $('#editBookingId').val();
+
+  if(payloadFlag == "json"){
+    requestDetails.contentType = "application/json";
+    requestDetails.payload = JSON.stringify(booking);
+  } else if(payloadFlag == "xml"){
+    requestDetails.contentType = "text/xml";
+    requestDetails.payload = '<booking>' + x2js.json2xml_str(booking) + '</booking>';
+  } else if(payloadFlag == "form"){
+    requestDetails.contentType = "application/x-www-form-urlencoded";
+    requestDetails.payload = $.param(booking);
+  }
+
+  $.ajax({
+    url: '/booking/' + bookingId,
+    type: 'PUT',
+    data: requestDetails.payload,
+    contentType: requestDetails.contentType,
+    success: function(data){
+      $('#editStatus').text('Booking updated');
+    },
+    error: function(){
+      $('#editStatus').text('Booking could not be updated');
+    }
+  })
+};
+
+var refreshPage = function(){
+  location.reload();
 }
 
 function getUrlVars()

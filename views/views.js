@@ -22,18 +22,52 @@ exports.index = function(callback){
             '             </div>' +
             '             <div class="modal-body">';
 
+  render += createForm('create');
+
+  render += '            </div>' +
+            '            <div class="modal-footer">' +
+            '              <button type="button" class="btn btn-default" data-dismiss="modal" onclick="createBooking()">Save</button>' +
+            '            </div>' +
+            '          </div>' +
+            '        </div>' +
+            '      </div>';
+
+  render += '  <div class="modal fade" id="editModal" role="dialog">' +
+            '    <div class="modal-dialog">' +
+            '      <div class="modal-content">' +
+            '        <div class="modal-header">' +
+            '          <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>' +
+            '          <h4 class="modal-title" id="myModalLabel">Edit booking</h4>' +
+            '        </div>' +
+            '        <div class="modal-body" id="editBookingModal">' + createForm('edit') +
+            '        <input type="hidden" id="editBookingId" />' +
+            '        </div>' +
+            '        <div class="modal-footer">' +
+            '          <span id="editStatus" /></span>' +
+            '          <button type="button" class="btn btn-default" onclick="editBooking()">Edit</button>' +
+            '          <button type="button" class="btn btn-default" data-dismiss="modal" onclick="refreshPage()">Close</button>' +
+            '        </div>' +
+            '      </div>' +
+            '    </div>' +
+            '  </div>'
+            '</div>';
+
+  callback(header  + render + footer);
+}
+
+var createForm = function(type){
   var form = '                 <div class="row">' +
              '                   <div class="col-md-4">' +
-             '                     <input id="firstname" class="input" placeholder="Firstname"/>' +
+             '                     <input id="' + type + 'Firstname" class="input" placeholder="Firstname"/>' +
              '                   </div>' +
              '                   <div class="col-md-4">' +
-             '                     <input id="lastname" class="input" placeholder="Lastname"/>' +
+             '                     <input id="' + type + 'Lastname" class="input" placeholder="Lastname"/>' +
              '                   </div>' +
              '                   <div class="col-md-2">' +
-             '                     <input id="totalprice" class="input"  placeholder="Price" style="width: 100%"/>' +
+             '                     <input id="' + type + 'Totalprice" class="input"  placeholder="Price" style="width: 100%"/>' +
              '                   </div>' +
              '                   <div class="col-md-2">' +
-             '                     <select id="depositpaid">' +
+             '                     <select id="' + type + 'Depositpaid">' +
              '                       <option value="true">true</option>' +
              '                       <option value="false">false</option>' +
              '                     </select>' +
@@ -45,12 +79,12 @@ exports.index = function(callback){
   switch (features.dobFeature()) {
     case 'boolean':
         form += '              <div class="col-md-4">' +
-                '                <input id="age" class="input" type="checkbox" value="true">' +
+                '                <input id="' + type + 'Age" class="input" type="checkbox" value="true">' +
                 '              </div>';
       break;
     case 'string':
         form += '              <div class="col-md-4">' +
-                '                <select id="age">' +
+                '                <select id="' + type + 'Age">' +
                 '                  <option value="over21">true</option>' +
                 '                  <option value="under21">false</option>' +
                 '                </select>' +
@@ -58,45 +92,18 @@ exports.index = function(callback){
       break;
       case 'compare':
           form += '              <div class="col-md-4">' +
-                  '                <input id="age" placeholder="Age" class="datepicker input"/>' +
+                  '                <input id="' + type + 'Age" placeholder="Age" class="datepicker input"/>' +
                   '              </div>';
         break;
   }
 
   form += '                <div class="col-md-4">' +
-          '                  <input id="checkin" class="datepicker input" placeholder="Checkin"/>' +
+          '                  <input id="' + type + 'Checkin" class="datepicker input" placeholder="Checkin"/>' +
           '                </div>' +
           '                <div class="col-md-4">' +
-          '                  <input id="checkout" class="datepicker input" placeholder="Checkout"/>' +
+          '                  <input id="' + type + 'Checkout" class="datepicker input" placeholder="Checkout"/>' +
           '                </div>' +
           '              </div>';
 
-  render += form;
-
-  render += '            </div>' +
-            '            <div class="modal-footer">' +
-            '              <button type="button" class="btn btn-default" data-dismiss="modal" onclick="createBooking()">Save</button>' +
-            '            </div>' +
-            '          </div>' +
-            '        </div>' +
-            '      </div>' +
-            '    </div>';
-
-  render += '<div class="modal fade" id="editModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">' +
-            '  <div class="modal-dialog" role="document">' +
-            '    <div class="modal-content">' +
-            '      <div class="modal-header">' +
-            '        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>' +
-            '        <h4 class="modal-title" id="myModalLabel">Edit booking</h4>' +
-            '      </div>' +
-            '      <div class="modal-body" id="editBookingModal">' + form +
-            '      </div>' +
-            '      <div class="modal-footer">' +
-            '        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>' +
-            '      </div>' +
-            '    </div>' +
-            '  </div>' +
-            '</div>';
-
-  callback(header  + render + footer);
+  return form;
 }
