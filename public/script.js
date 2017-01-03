@@ -6,6 +6,12 @@ $( document ).ready(function() {
   payloadFlag = $('#payloadFlag').val();
   indexFlag = $('#indexFlag').val();
 
+  if($('#editFlag').val() === 'partial'){
+    $('#editModal input, #editModal select').change(function(){
+      partialEditBooking($(this).val(), $(this).attr('id'), $('#editBookingId').val())
+    })
+  }
+
   currentPage = parseInt(getUrlVars()['page'])
 
   $('#editModal').modal({ show: false})
@@ -187,6 +193,48 @@ var editBooking = function(){
         },
       },
       bookingId = $('#editBookingId').val();
+
+  if(payloadFlag == "json"){
+    requestDetails.contentType = "application/json";
+    requestDetails.payload = JSON.stringify(booking);
+  } else if(payloadFlag == "xml"){
+    requestDetails.contentType = "text/xml";
+    requestDetails.payload = '<booking>' + x2js.json2xml_str(booking) + '</booking>';
+  } else if(payloadFlag == "form"){
+    requestDetails.contentType = "application/x-www-form-urlencoded";
+    requestDetails.payload = $.param(booking);
+  }
+
+  $.ajax({
+    url: '/booking/' + bookingId,
+    type: 'PUT',
+    data: requestDetails.payload,
+    contentType: requestDetails.contentType,
+    success: function(data){
+      $('#editStatus').text('Booking updated');
+    },
+    error: function(){
+      $('#editStatus').text('Booking could not be updated');
+    }
+  })
+};
+
+var partialEditBooking = function(value, item, bookingId){
+  var requestDetails = {},
+      booking = {
+        "dob": $('#editAge').val(),
+      };
+
+  var itemName = item.replace('edit','').toLowerCase();
+
+  if(itemName == 'checkin' || itemName == 'checkout'){
+      booking['bookingdates'] = {
+          'checkin': $('#editCheckin').val(),
+          'checkout': $('#editCheckout').val()
+      }
+  } else {
+      booking[itemName] = value;
+  }
 
   if(payloadFlag == "json"){
     requestDetails.contentType = "application/json";

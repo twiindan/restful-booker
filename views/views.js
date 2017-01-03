@@ -11,7 +11,8 @@ exports.index = function(callback){
                '         <div class="col-md-1" id="next"><a href="">Next</a></div>' +
                '       </div>' +
                '  <input type="hidden" id="payloadFlag" value="' + features.payloadFeature() + '" />' +
-               '  <input type="hidden" id="indexFlag" value="' + features.indexFeature() + '" />';
+               '  <input type="hidden" id="indexFlag" value="' + features.indexFeature() + '" />' +
+               '  <input type="hidden" id="editFlag" value="' + features.editFeature() + '" />';
 
   render += '       <div id="form" class="modal fade" role="dialog">' +
             '         <div class="modal-dialog">' +
@@ -43,9 +44,13 @@ exports.index = function(callback){
             '        <input type="hidden" id="editBookingId" />' +
             '        </div>' +
             '        <div class="modal-footer">' +
-            '          <span id="editStatus" /></span>' +
-            '          <button type="button" class="btn btn-default" onclick="editBooking()">Edit</button>' +
-            '          <button type="button" class="btn btn-default" data-dismiss="modal" onclick="refreshPage()">Close</button>' +
+            '          <span id="editStatus" /></span>';
+
+  if(features.editFeature() === 'full'){
+      render += '          <button type="button" class="btn btn-default" onclick="editBooking()">Edit</button>';
+  }
+
+  render += '          <button type="button" class="btn btn-default" data-dismiss="modal" onclick="refreshPage()">Close</button>' +
             '        </div>' +
             '      </div>' +
             '    </div>' +

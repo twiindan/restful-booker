@@ -18,21 +18,21 @@ exports.validateBooking = function(p, callback){
 exports.validateAge = function(booking) {
   switch (features.dobFeature()) {
     case "boolean":
-      if(newBooking.dob.toString() === 'true'){
+      if(booking.dob.toString() === 'true'){
         return true;
       } else {
         return false;
       }
       break;
     case "string":
-      if(newBooking.dob === 'over21'){
+      if(booking.dob === 'over21'){
         return true;
       } else {
         return false;
       }
       break;
     case "compare":
-      ageDifMs = Date.now() - new Date(newBooking.dob).getTime();
+      ageDifMs = Date.now() - new Date(booking.dob).getTime();
       ageDate = new Date(ageDifMs);
       age = Math.abs(ageDate.getUTCFullYear() - 1970);
 

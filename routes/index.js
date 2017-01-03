@@ -113,7 +113,7 @@ router.put('/booking/:id', function(req, res, next) {
 
     if(req.headers['content-type'] === 'text/xml') updatedBooking = updatedBooking.booking;
 
-    if(validator.validateBooking(updatedBooking) && validator.validateAge(newBooking)){
+    if(validator.validateBooking(updatedBooking) && validator.validateAge(updatedBooking)){
       Booking.update(req.params.id, updatedBooking, function(err){
         Booking.get(req.params.id, function(err, record){
           if(record){

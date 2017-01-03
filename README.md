@@ -18,6 +18,7 @@ Restful-booker can be feature switched by setting environmental variables, such 
 export payload=json|xml|form
 export dob=boolean|string|compare
 export index=page|full
+export edit=partial|full
 ```
 
 # API
