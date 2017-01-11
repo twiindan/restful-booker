@@ -29,3 +29,11 @@ exports.editFeature = function(){
     return 'full';
   }
 }
+
+exports.validateFeature = function(){
+  if(process.env.validation){
+    return process.env.validation;
+  } else {
+    return 'server';
+  }
+}

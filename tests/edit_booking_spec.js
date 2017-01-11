@@ -11,6 +11,7 @@ var payload  = helpers.generateDobPayload('Sally', 'Brown', 111, true, 'Breakfas
     partialPayload = {
       'firstname': 'Geoff',
       'lastname': 'White',
+      'dob': 'over21',
       'bookingdates': {
         'checkin': '2013-02-02',
         'checkout': '2013-02-05'
@@ -34,7 +35,7 @@ parseNumbers = function(str) {
 describe('restful-booker - Edit feature switch', function () {
 
   it('responds with a 200 and updated payload using JSON full record edit feature switch on PUT /booking', function(done){
-    helpers.setEnv('json', 'string', 'full', 'full', function(server){
+    helpers.setEnv('json', 'string', 'full', 'full', 'server', function(server){
       request(server)
         .post('/booking')
         .send(payload)
@@ -56,7 +57,7 @@ describe('restful-booker - Edit feature switch', function () {
   });
 
   it('responds with a 200 and updated payload using XML full record edit feature switch on PUT /booking', function(done){
-    helpers.setEnv('xml', 'string', 'full', 'full', function(server){
+    helpers.setEnv('xml', 'string', 'full', 'full', 'server', function(server){
       xmlPayload = js2xmlparser('booking', payload);
       xmlPayload2 = js2xmlparser('booking', payload2);
 
@@ -90,7 +91,7 @@ describe('restful-booker - Edit feature switch', function () {
   });
 
   it('responds with a 200 and updated payload using URL encoded full record edit feature switch on PUT /booking', function(done){
-    helpers.setEnv('form', 'string', 'full', 'full', function(server){
+    helpers.setEnv('form', 'string', 'full', 'full', 'server', function(server){
       var token;
 
       request(server)
@@ -117,7 +118,7 @@ describe('restful-booker - Edit feature switch', function () {
   });
 
   it('responds with a 400 when sending a partial payload in full edit mode', function(done){
-    helpers.setEnv('json', 'string', 'full', 'full', function(server){
+    helpers.setEnv('json', 'string', 'full', 'full', 'server', function(server){
       request(server)
         .post('/booking')
         .send(payload)
@@ -138,7 +139,7 @@ describe('restful-booker - Edit feature switch', function () {
   });
 
   it('responds with a JSON partial record edit feature switch on PUT /booking', function(done){
-    helpers.setEnv('json', 'string', 'full', 'partial', function(server){
+    helpers.setEnv('json', 'string', 'full', 'partial', 'server', function(server){
       request(server)
         .post('/booking')
         .send(payload)
@@ -160,7 +161,7 @@ describe('restful-booker - Edit feature switch', function () {
   });
 
   it('responds with a XML partial record edit feature switch on PUT /booking', function(done){
-    helpers.setEnv('xml', 'string', 'full', 'partial', function(server){
+    helpers.setEnv('xml', 'string', 'full', 'partial', 'server', function(server){
       xmlPayload = js2xmlparser('booking', payload);
       xmlPayload2 = js2xmlparser('booking', payload2);
       xmlPartialPayload = js2xmlparser('booking', partialPayload);
@@ -195,7 +196,7 @@ describe('restful-booker - Edit feature switch', function () {
   });
 
   it('responds with a URL encoded partial record edit feature switch on PUT /booking', function(done){
-    helpers.setEnv('form', 'string', 'full', 'partial', function(server){
+    helpers.setEnv('form', 'string', 'full', 'partial', 'server', function(server){
       var token;
 
       request(server)

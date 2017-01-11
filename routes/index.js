@@ -88,53 +88,51 @@ router.post('/booking', function(req, res, next) {
 
   if(req.headers['content-type'] === 'text/xml') newBooking = newBooking.booking;
 
-  if(validator.validateAge(newBooking)){
-    Booking.create(newBooking, function(err, booking){
-      if(err)
-        res.sendStatus(500);
-      else {
-        var record = parse.bookingWithId(req, booking);
-
-        if(!record){
+  validator.validateNewBooking(newBooking,function(msg){
+    if(!msg){
+      Booking.create(newBooking, function(err, booking){
+        if(err)
           res.sendStatus(500);
-        } else {
-          res.send(record);
-        }
-      }
-    })
-  } else {
-    res.sendStatus(400);
-  }
-});
+        else {
+          var record = parse.bookingWithId(req, booking);
 
-router.put('/booking/:id', function(req, res, next) {
-  // if(globalLogins[req.cookies.token] || req.headers.authorization == 'Basic YWRtaW46cGFzc3dvcmQxMjM='){
-    updatedBooking = req.body;
-
-    if(req.headers['content-type'] === 'text/xml') updatedBooking = updatedBooking.booking;
-
-    if(validator.validateBooking(updatedBooking) && validator.validateAge(updatedBooking)){
-      Booking.update(req.params.id, updatedBooking, function(err){
-        Booking.get(req.params.id, function(err, record){
-          if(record){
-            var booking = parse.booking(req.headers.accept, record);
-
-            if(!booking){
-              res.sendStatus(500);
-            } else {
-              res.send(booking);
-            }
+          if(!record){
+            res.sendStatus(500);
           } else {
-            res.sendStatus(405);
+            res.send(record);
           }
-        })
-      });
+        }
+      })
     } else {
       res.sendStatus(400);
     }
-  // } else {
-  //   res.sendStatus(403);
-  // }
+  });
+});
+
+router.put('/booking/:id', function(req, res, next) {
+  updatedBooking = req.body;
+
+  if(req.headers['content-type'] === 'text/xml') updatedBooking = updatedBooking.booking;
+
+  if(validator.validateEditBooking(updatedBooking) && validator.validateAge(updatedBooking)){
+    Booking.update(req.params.id, updatedBooking, function(err){
+      Booking.get(req.params.id, function(err, record){
+        if(record){
+          var booking = parse.booking(req.headers.accept, record);
+
+          if(!booking){
+            res.sendStatus(500);
+          } else {
+            res.send(booking);
+          }
+        } else {
+          res.sendStatus(405);
+        }
+      })
+    });
+  } else {
+    res.sendStatus(400);
+  }
 });
 
 router.delete('/booking/:id', function(req, res, next) {
