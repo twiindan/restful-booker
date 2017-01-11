@@ -6,7 +6,7 @@ var features = require('../helpers/features'),
         length : {
           minimum : 2,
           maximum : 25,
-          message : "Must between at 2 and 25 characters"
+          message : 'Must between at 2 and 25 characters'
         }
       },
       lastname : {
@@ -14,11 +14,15 @@ var features = require('../helpers/features'),
         length : {
           minimum : 2,
           maximum : 25,
-          message : "Must between at 2 and 25 characters"
+          message : 'Must between at 2 and 25 characters'
         }
       },
       totalprice : {
-        presence : true
+        presence : true,
+        numericality : {
+          greaterThan: 0,
+          onlyInteger : true
+        }
       },
       depositpaid : {
         presence : true
@@ -37,7 +41,7 @@ var features = require('../helpers/features'),
           }
         }
       },
-      "bookingdates.checkout" : {
+      'bookingdates.checkout' : {
         presence : true,
         equality : {
           message : 'Checkout date should before Dec 31st 2099',
@@ -53,25 +57,25 @@ var features = require('../helpers/features'),
       },
       dob : {
         equality : {
-          message : "Date of birth is invalid",
-          attribute : "dob",
+          message : 'Date of birth is invalid',
+          attribute : 'dob',
           comparator : function(dob){
             switch (features.dobFeature()) {
-              case "boolean":
+              case 'boolean':
                 if(dob.toString() === 'true'){
                   return true;
                 } else {
                   return false;
                 }
                 break;
-              case "string":
+              case 'string':
                 if(dob === 'over21'){
                   return true;
                 } else {
                   return false;
                 }
                 break;
-              case "compare":
+              case 'compare':
                 ageDifMs = Date.now() - new Date(dob).getTime();
                 ageDate = new Date(ageDifMs);
                 age = Math.abs(ageDate.getUTCFullYear() - 1970);
@@ -112,21 +116,21 @@ exports.validateEditBooking = function(p, callback){
 
 exports.validateAge = function(booking) {
   switch (features.dobFeature()) {
-    case "boolean":
+    case 'boolean':
       if(booking.dob.toString() === 'true'){
         return true;
       } else {
         return false;
       }
       break;
-    case "string":
+    case 'string':
       if(booking.dob === 'over21'){
         return true;
       } else {
         return false;
       }
       break;
-    case "compare":
+    case 'compare':
       ageDifMs = Date.now() - new Date(booking.dob).getTime();
       ageDate = new Date(ageDifMs);
       age = Math.abs(ageDate.getUTCFullYear() - 1970);
