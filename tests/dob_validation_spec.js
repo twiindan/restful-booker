@@ -11,14 +11,14 @@ var setDate = function(age){
   return nd.getFullYear() + '-' + (nd.getMonth() + 1) + '-' + nd.getDate();
 }
 
-var payloadBool  = helpers.generateDobObjPayload('Sally', 'Brown', 111, true, 'Breakfast', '2013-02-01', '2013-02-04', true),
-    payloadBool2 = helpers.generateDobObjPayload('Sally', 'Brown', 111, true, 'Breakfast', '2013-02-01', '2013-02-04', false);
+var payloadBool  = helpers.generateDobObjPayload('Sally', 'Brown', 111, true, 'Breakfast', '2080-01-01', '2080-01-02', true),
+    payloadBool2 = helpers.generateDobObjPayload('Sally', 'Brown', 111, true, 'Breakfast', '2080-01-01', '2080-01-02', false);
 
-var payloadStr  = helpers.generateDobPayload('Sally', 'Payload1', 111, true, 'Breakfast', '2013-02-01', '2013-02-04', 'over21'),
-    payloadStr2 = helpers.generateDobPayload('Sally', 'Payload3', 111, true, 'Breakfast', '2013-02-01', '2013-02-04', 'under21');
+var payloadStr  = helpers.generateDobPayload('Sally', 'Payload1', 111, true, 'Breakfast', '2080-01-01', '2080-01-02', 'over21'),
+    payloadStr2 = helpers.generateDobPayload('Sally', 'Payload3', 111, true, 'Breakfast', '2080-01-01', '2080-01-02', 'under21');
 
-var payloadCompare  = helpers.generateDobPayload('Sally', 'Payload1', 111, true, 'Breakfast', '2013-02-01', '2013-02-04', setDate(21)),
-    payloadCompare2 = helpers.generateDobPayload('Sally', 'Payload2', 111, true, 'Breakfast', '2013-02-01', '2013-02-04', setDate(1));
+var payloadCompare  = helpers.generateDobPayload('Sally', 'Payload1', 111, true, 'Breakfast', '2080-01-01', '2080-01-02', setDate(21)),
+    payloadCompare2 = helpers.generateDobPayload('Sally', 'Payload2', 111, true, 'Breakfast', '2080-01-01', '2080-01-02', setDate(1));
 
 describe('restful-booker - Boolean date validation feature switch', function () {
 

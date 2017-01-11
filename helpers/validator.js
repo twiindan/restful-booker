@@ -23,11 +23,33 @@ var features = require('../helpers/features'),
       depositpaid : {
         presence : true
       },
-      "bookingdates.checkin" : {
-        presence : true
+      'bookingdates.checkin' : {
+        presence : true,
+        equality : {
+          message : 'Checkin date should before checkout',
+          attribute : 'bookingdates.checkout',
+          comparator : function(v1, v2){
+            if(new Date(v1) < new Date(v2) && new Date(v1) >= new Date()){
+              return true;
+            } else {
+              return false;
+            }
+          }
+        }
       },
       "bookingdates.checkout" : {
-        presence : true
+        presence : true,
+        equality : {
+          message : 'Checkout date should before Dec 31st 2099',
+          attribute : 'bookingdates.checkin',
+          comparator : function(checkout){
+            if(new Date(checkout) < new Date('2099-12-31')){
+              return true;
+            } else {
+              return false;
+            }
+          }
+        }
       },
       dob : {
         equality : {

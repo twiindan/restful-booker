@@ -3,9 +3,9 @@ var request      = require('supertest-as-promised'),
     should       = require('chai').should(),
     helpers      = require('./helpers');
 
-var payload  = helpers.generateDobObjPayload('Sally', 'Brown', 111, true, 'Breakfast', '2013-02-01', '2013-02-04', 'over21'),
-    payload2 = helpers.generateDobObjPayload('Geoff', 'White', 111, true, 'Breakfast', '2013-02-02', '2013-02-05', 'over21'),
-    payload3 = helpers.generateDobObjPayload('Bob', 'Brown', 111, true, 'Breakfast', '2013-02-03', '2013-02-06', 'over21');
+var payload  = helpers.generateDobObjPayload('Sally', 'Brown', 111, true, 'Breakfast', '2080-01-01', '2080-01-02', 'over21'),
+    payload2 = helpers.generateDobObjPayload('Geoff', 'White', 111, true, 'Breakfast', '2080-01-02', '2080-01-03', 'over21'),
+    payload3 = helpers.generateDobObjPayload('Bob', 'Brown', 111, true, 'Breakfast', '2080-01-04', '2080-01-05', 'over21');
 
 describe('restful-booker', function () {
 
@@ -104,7 +104,7 @@ describe('restful-booker - GET /booking - JSON feature switch', function () {
             .send(payload2)
         }).then(function(){
           request(server)
-            .get('/booking?checkin=2013-02-01')
+            .get('/booking?checkin=2080-01-01')
             .expect(200)
             .expect(function(res){
               res.body[0].should.have.property('id').and.equal(2);
@@ -125,7 +125,7 @@ describe('restful-booker - GET /booking - JSON feature switch', function () {
             .send(payload2)
         }).then(function(){
           request(server)
-            .get('/booking?checkout=2013-02-05')
+            .get('/booking?checkout=2080-01-03')
             .expect(200)
             .expect(function(res){
               res.body[0].should.have.property('id').and.equal(1);
@@ -150,7 +150,7 @@ describe('restful-booker - GET /booking - JSON feature switch', function () {
             .send(payload3)
         }).then(function(){
           request(server)
-            .get('/booking?checkin=2013-02-01&checkout=2013-02-06')
+            .get('/booking?checkin=2080-01-01&checkout=2080-01-06')
             .expect(200)
             .expect(function(res){
               res.body[0].should.have.property('id').and.equal(2);
@@ -175,7 +175,7 @@ describe('restful-booker - GET /booking - JSON feature switch', function () {
             .send(payload3)
         }).then(function(){
           request(server)
-            .get('/booking?firstname=Geoff&lastname=White&checkin=2013-02-01&checkout=2013-02-06')
+            .get('/booking?firstname=Geoff&lastname=White&checkin=2080-01-01&checkout=2080-01-06')
             .expect(200)
             .expect(function(res){
               res.body[0].should.have.property('id').and.equal(2);

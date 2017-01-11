@@ -6,15 +6,15 @@ var request      = require('supertest-as-promised'),
     xml2js       = require('xml2js').parseString,
     formurlencoded = require('form-urlencoded');
 
-var payload  = helpers.generateDobPayload('Sally', 'Brown', 111, true, 'Breakfast', '2013-02-01', '2013-02-04', 'over21'),
-    payload2 = helpers.generateDobPayload('Geoff', 'White', 111, true, 'Breakfast', '2013-02-02', '2013-02-05', 'over21');
+var payload  = helpers.generateDobPayload('Sally', 'Brown', 111, true, 'Breakfast', '2080-01-01', '2080-01-02', 'over21'),
+    payload2 = helpers.generateDobPayload('Geoff', 'White', 111, true, 'Breakfast', '2080-01-01', '2080-01-02', 'over21');
     partialPayload = {
       'firstname': 'Geoff',
       'lastname': 'White',
       'dob': 'over21',
       'bookingdates': {
-        'checkin': '2013-02-02',
-        'checkout': '2013-02-05'
+        'checkin': '2080-01-01',
+        'checkout': '2080-01-02'
       }
     }
 
