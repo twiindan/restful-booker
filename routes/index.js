@@ -114,29 +114,31 @@ router.put('/booking/:id', function(req, res, next) {
 
   if(req.headers['content-type'] === 'text/xml') updatedBooking = updatedBooking.booking;
 
-  if(validator.validateEditBooking(updatedBooking) && validator.validateAge(updatedBooking)){
-    Booking.update(req.params.id, updatedBooking, function(err){
-      Booking.get(req.params.id, function(err, record){
-        if(record){
-          var booking = parse.booking(req.headers.accept, record);
+  validator.scrubAndValidate(updatedBooking, function(payload, msg){
+    if(!msg){
+      Booking.update(req.params.id, updatedBooking, function(err){
+        Booking.get(req.params.id, function(err, record){
+          if(record){
+            var booking = parse.booking(req.headers.accept, record);
 
-          if(!booking){
-            res.sendStatus(500);
+            if(!booking){
+              res.sendStatus(500);
+            } else {
+              res.send(booking);
+            }
           } else {
-            res.send(booking);
+            res.sendStatus(405);
           }
-        } else {
-          res.sendStatus(405);
-        }
-      })
-    });
-  } else {
-    res.sendStatus(400);
-  }
+        })
+      });
+    } else {
+      res.sendStatus(400);
+    }
+  });
 });
 
 router.delete('/booking/:id', function(req, res, next) {
-  if(globalLogins[req.cookies.token] || req.headers.authorization == 'Basic YWRtaW46cGFzc3dvcmQxMjM='){
+  // if(globalLogins[req.cookies.token] || req.headers.authorization == 'Basic YWRtaW46cGFzc3dvcmQxMjM='){
     Booking.get(req.params.id, function(err, record){
       if(record){
         Booking.delete(req.params.id, function(err){
@@ -146,9 +148,9 @@ router.delete('/booking/:id', function(req, res, next) {
         res.sendStatus(405);
       }
     });
-  } else {
-    res.sendStatus(403);
-  }
+  // } else {
+  //   res.sendStatus(403);
+  // }
 });
 
 router.post('/auth', function(req, res, next){

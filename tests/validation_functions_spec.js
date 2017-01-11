@@ -150,4 +150,16 @@ describe('restful-booker - Validation of payloads', function(){
     });
   });
 
+  it('should return a 200 when server side validation is switch off', function(done){
+    helpers.setEnv('json', 'string', 'full', 'full', 'client', function(server){
+      var tmpPayload = helpers.generateDobObjPayload('a', 'b', 1.234, true, 'Breakfast', '2080-01-02', '2080-01-02', 'over21');;
+      tmpPayload.totalprice = 1.234;
+
+      request(server)
+        .post('/booking')
+        .send(tmpPayload)
+        .expect(200, done)
+    });
+  });
+
 });
