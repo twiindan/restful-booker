@@ -88,9 +88,9 @@ router.post('/booking', function(req, res, next) {
 
   if(req.headers['content-type'] === 'text/xml') newBooking = newBooking.booking;
 
-  validator.validateNewBooking(newBooking,function(msg){
+  validator.scrubAndValidate(newBooking, function(payload, msg){
     if(!msg){
-      Booking.create(newBooking, function(err, booking){
+      Booking.create(payload, function(err, booking){
         if(err)
           res.sendStatus(500);
         else {

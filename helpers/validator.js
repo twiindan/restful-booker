@@ -10,7 +10,12 @@ var features = require('../helpers/features'),
         }
       },
       lastname : {
-        presence : true
+        presence : true,
+        length : {
+          minimum : 2,
+          maximum : 25,
+          message : "Must between at 2 and 25 characters"
+        }
       },
       totalprice : {
         presence : true
@@ -61,8 +66,11 @@ var features = require('../helpers/features'),
       }
     }
 
-exports.validateNewBooking = function(p, callback){
-  callback(validate(p, constraints))
+exports.scrubAndValidate = function(payload, callback){
+  payload.firstname = payload.firstname.trim();
+  payload.lastname = payload.lastname.trim();
+
+  callback(payload, validate(payload, constraints))
 },
 
 exports.validateEditBooking = function(p, callback){
