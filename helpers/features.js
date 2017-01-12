@@ -37,3 +37,11 @@ exports.validateFeature = function(){
     return 'server';
   }
 }
+
+exports.authFeature = function(){
+  if(process.env.auth){
+    return process.env.auth;
+  } else {
+    return 'query';
+  }
+}

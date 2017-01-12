@@ -138,7 +138,7 @@ router.put('/booking/:id', function(req, res, next) {
 });
 
 router.delete('/booking/:id', function(req, res, next) {
-  if(globalLogins[req.cookies.token] || req.headers.authorization == 'Basic YWRtaW46cGFzc3dvcmQxMjM='){
+  // if(globalLogins[req.cookies.token] || req.headers.authorization == 'Basic YWRtaW46cGFzc3dvcmQxMjM='){
     Booking.get(req.params.id, function(err, record){
       if(record){
         Booking.delete(req.params.id, function(err){
@@ -148,6 +148,31 @@ router.delete('/booking/:id', function(req, res, next) {
         res.sendStatus(405);
       }
     });
+});
+
+router.get('/export', function(req, res, next){
+  var loggedIn = false;
+
+  switch(features.authFeature()){
+    case 'basic':
+      if(req.headers.authorization === 'Basic YWRtaW46cGFzc3dvcmQxMjM='){
+        loggedIn = true
+      }
+      break;
+    case 'query':
+      if(req.query.username === 'admin' && req.query.password === 'password123'){
+        loggedIn = true;
+      }
+      break;
+    case 'token':
+      if(globalLogins[req.cookies.token]){
+        loggedIn = true;
+      }
+      break;
+  }
+
+  if(loggedIn){
+      res.sendStatus(200);
   } else {
     res.sendStatus(403);
   }
