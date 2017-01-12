@@ -19,6 +19,7 @@ export payload=json|xml|form
 export dob=boolean|string|compare
 export index=page|full
 export edit=partial|full
+export validation=server|client|both
 ```
 
 # API

@@ -12,6 +12,7 @@ exports.index = function(callback){
                '       </div>' +
                '  <input type="hidden" id="payloadFlag" value="' + features.payloadFeature() + '" />' +
                '  <input type="hidden" id="indexFlag" value="' + features.indexFeature() + '" />' +
+               '  <input type="hidden" id="validationFlag" value="' + features.validateFeature() + '" />' +
                '  <input type="hidden" id="editFlag" value="' + features.editFeature() + '" />';
 
   render += '       <div id="form" class="modal fade" role="dialog">' +
@@ -27,7 +28,7 @@ exports.index = function(callback){
 
   render += '            </div>' +
             '            <div class="modal-footer">' +
-            '              <button type="button" class="btn btn-default" data-dismiss="modal" onclick="createBooking()">Save</button>' +
+            '              <button type="button" class="btn btn-default" onclick="createBooking()">Save</button>' +
             '            </div>' +
             '          </div>' +
             '        </div>' +
@@ -50,7 +51,7 @@ exports.index = function(callback){
       render += '          <button type="button" class="btn btn-default" onclick="editBooking()">Edit</button>';
   }
 
-  render += '          <button type="button" class="btn btn-default" data-dismiss="modal" onclick="refreshPage()">Close</button>' +
+  render += '          <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>' +
             '        </div>' +
             '      </div>' +
             '    </div>' +

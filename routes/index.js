@@ -104,7 +104,7 @@ router.post('/booking', function(req, res, next) {
         }
       })
     } else {
-      res.sendStatus(400);
+      res.status(400).send(msg);
     }
   });
 });
@@ -132,13 +132,13 @@ router.put('/booking/:id', function(req, res, next) {
         })
       });
     } else {
-      res.sendStatus(400);
+      res.status(400).send(msg);
     }
   });
 });
 
 router.delete('/booking/:id', function(req, res, next) {
-  // if(globalLogins[req.cookies.token] || req.headers.authorization == 'Basic YWRtaW46cGFzc3dvcmQxMjM='){
+  if(globalLogins[req.cookies.token] || req.headers.authorization == 'Basic YWRtaW46cGFzc3dvcmQxMjM='){
     Booking.get(req.params.id, function(err, record){
       if(record){
         Booking.delete(req.params.id, function(err){
@@ -148,9 +148,9 @@ router.delete('/booking/:id', function(req, res, next) {
         res.sendStatus(405);
       }
     });
-  // } else {
-  //   res.sendStatus(403);
-  // }
+  } else {
+    res.sendStatus(403);
+  }
 });
 
 router.post('/auth', function(req, res, next){

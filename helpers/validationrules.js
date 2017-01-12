@@ -45,7 +45,7 @@ exports.returnRuleSet = function(){
     }
   };
 
-  if(features.validateFeature() === 'server'){
+  if(features.validateFeature() === 'server' || features.validateFeature() === 'both'){
     constraints.firstname.length = {
         minimum : 2,
         maximum : 25,
