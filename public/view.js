@@ -35,6 +35,10 @@ $( document ).ready(function() {
   $('#editModal').on('hidden.bs.modal', function () {
    location.reload();
   })
+
+  $('#form').on('hidden.bs.modal', function () {
+    location.reload();
+  });
 });
 
 function getUrlVars(){

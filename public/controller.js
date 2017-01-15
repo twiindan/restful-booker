@@ -51,14 +51,6 @@ var createBooking = function(){
 
   if(highlightInputs('create', message)){
     makeRequest('/booking', 'POST', booking, 'create', function(data){
-      if(payloadFlag === "xml") data = x2js.xml_str2json(data)['created-booking'];
-      if(payloadFlag === "form") data = form2Json(data);
-
-      $('.input').val('');
-        $('#bookings')
-          .append('<div class="row" id=' + data.bookingid + '><div class="col-md-2"><p>' + data.booking.firstname + '</p></div><div class="col-md-2"><p>' + data.booking.lastname + '</p></div><div class="col-md-1"><p>' + data.booking.totalprice + '</p></div><div class="col-md-1"><p>' + data.booking.depositpaid + '</p></div><div class="col-md-1"><p>' + data.booking.dob + '</p></div><div class="col-md-2"><p>' + data.booking.bookingdates.checkin +
-                  '</p></div><div class="col-md-2"><p>' + data.booking.bookingdates.checkout + '</p></div><div class="col-md-1"><input type="button" onclick="showEditBooking(' + data.bookingid + ')" value="Edit" /> <input type="button" onclick="deleteBooking(' + data.bookingid + ')" value="Delete"/></div></div>');
-
       $('#form').modal('toggle');
     })
   }
