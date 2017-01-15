@@ -43,7 +43,7 @@ router.get('/booking', function(req, res, next) {
   }
 
   if(features.indexFeature() === 'page' && typeof(req.query.page) != 'undefined'){
-    if(req.query.page >= 0){
+    if(req.query.page >= 0 && Number.isInteger(parseInt(req.query.page))){
       var skipCount = (req.query.page * 10) - 10;
 
       Booking.getIDsLimit(query, skipCount, function(err, record){
