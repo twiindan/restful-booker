@@ -23,6 +23,16 @@ router.get('/ping', function(req, res, next) {
   res.sendStatus(201);
 });
 
+router.get('/booking/count', function(req, res){
+  Booking.count(function(err, count){
+    if(!err){
+      res.send({"count": count});
+    } else {
+      res.sendStatus(500);
+    }
+  });
+});
+
 router.get('/booking', function(req, res, next) {
   var query = {};
 

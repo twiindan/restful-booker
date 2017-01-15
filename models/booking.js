@@ -90,3 +90,9 @@ exports.deleteAll = function(callback){
     callback(null);
   })
 }
+
+exports.count = function(callback){
+  Booking.count({}, function(err, count){
+    callback(err, count);
+  })
+}

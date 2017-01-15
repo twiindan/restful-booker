@@ -22,6 +22,12 @@ $( document ).ready(function() {
     $('#prev').css('visibility', 'hidden')
   }
 
+  $.get('/booking/count', function(data){
+    if(data.count - (currentPage * 10) <= 0){
+      $('#next').css('visibility', 'hidden');
+    }
+  });
+
   $('.datepicker').datepicker({
     dateFormat: 'yy-mm-dd'
   });
@@ -82,25 +88,23 @@ var populateBookings = function(){
           break;
       }
 
-      if(limit < 9 || indexFlag != 'page'){
-        $('#next').css('visibility', 'hidden');
-      }
-
       (getBooking = function(){
-        var bookingid = payload[count].id;
+        if(payload.length > 0){
+          var bookingid = payload[count].id;
 
-        $.get('/booking/' + bookingid, function(booking){
-          if(payloadFlag === "xml") booking = x2js.xml_str2json(booking).booking;
-          if(payloadFlag === "form") booking = form2Json(booking.replace(/\+/g,'%20'));
+          $.get('/booking/' + bookingid, function(booking){
+            if(payloadFlag === "xml") booking = x2js.xml_str2json(booking).booking;
+            if(payloadFlag === "form") booking = form2Json(booking.replace(/\+/g,'%20'));
 
-          $('#bookings')
-            .append('<div class="row" id=' + bookingid + '><div class="col-md-2"><p>' + booking.firstname + '</p></div><div class="col-md-2"><p>' + booking.lastname + '</p></div><div class="col-md-1"><p>' + booking.totalprice + '</p></div><div class="col-md-1"><p>' + booking.depositpaid + '</p></div><div class="col-md-1"><p>' + booking.dob + '</p></div><div class="col-md-2"><p>' + booking.bookingdates.checkin + '</p></div><div class="col-md-2"><p>' + booking.bookingdates.checkout +
-                    '</p></div><div class="col-md-1"><input type="button" value="Edit" onclick="showEditBooking(' + bookingid + ')" /> <input type="button" onclick="deleteBooking(' + bookingid + ')" value="Delete"/></div></div>');
-        });
+            $('#bookings')
+              .append('<div class="row" id=' + bookingid + '><div class="col-md-2"><p>' + booking.firstname + '</p></div><div class="col-md-2"><p>' + booking.lastname + '</p></div><div class="col-md-1"><p>' + booking.totalprice + '</p></div><div class="col-md-1"><p>' + booking.depositpaid + '</p></div><div class="col-md-1"><p>' + booking.dob + '</p></div><div class="col-md-2"><p>' + booking.bookingdates.checkin + '</p></div><div class="col-md-2"><p>' + booking.bookingdates.checkout +
+                      '</p></div><div class="col-md-1"><input type="button" value="Edit" onclick="showEditBooking(' + bookingid + ')" /> <input type="button" onclick="deleteBooking(' + bookingid + ')" value="Delete"/></div></div>');
+          });
 
-        if(count < limit){
-          count += 1;
-          getBooking();
+          if(count < limit){
+            count += 1;
+            getBooking();
+          }
         }
       })()
   });

@@ -426,3 +426,30 @@ describe('restful-booker DELETE /booking - JSON feature switch', function(){
   });
 
 });
+
+describe('Restful-booker - booking count', function(){
+
+  it('responds with a 200 and the count when GET /count', function(done){
+    helpers.setEnv('json', 'string', 'full', 'full', 'server', 'basic', function(server){
+      request(server)
+        .post('/booking')
+        .send(payload)
+        .then(function(){
+          return request(server)
+            .post('/booking')
+            .send(payload2)
+        })
+        .then(function(){
+          request(server)
+            .get('/booking/count')
+            .expect(200)
+            .expect(function(res){
+              console.log(res.body);
+              res.body.count.should.equal(2)
+            })
+            .end(done)
+        })
+    });
+  });
+
+})
