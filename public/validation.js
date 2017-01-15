@@ -1,7 +1,7 @@
 var constraints;
 
 $( document ).ready(function() {
-  
+
   if($('#validationFlag').val() === 'client' || $('#validationFlag').val() === 'both'){
 
     constraints = {
@@ -35,7 +35,10 @@ $( document ).ready(function() {
          message : 'Checkin date should before checkout',
          attribute : 'bookingdates.checkout',
          comparator : function(v1, v2){
-           if(new Date(v1) < new Date(v2) && new Date(v1) >= new Date()){
+           var currentDate = new Date();
+           currentDate.setHours(0,0,0,0);
+
+           if(new Date(v1) < new Date(v2) && new Date(v1) >= currentDate){
              return true;
            } else {
              return false;

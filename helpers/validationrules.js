@@ -29,7 +29,11 @@ exports.returnRuleSet = function(){
               }
               break;
             case 'compare':
-              ageDifMs = Date.now() - new Date(dob).getTime();
+              var currentDate = new Date();
+              currentDate.setDate(currentDate.getDate() - 1)
+              currentDate.setHours(0,0,0,0);
+
+              ageDifMs = currentDate - new Date(dob).getTime();
               ageDate = new Date(ageDifMs);
               age = Math.abs(ageDate.getUTCFullYear() - 1970);
 
@@ -64,10 +68,13 @@ exports.returnRuleSet = function(){
       };
 
     constraints['bookingdates.checkin'].equality = {
-        message : 'Checkin date should before checkout',
+        message : 'Checkin date should before checkout and not in the past',
         attribute : 'bookingdates.checkout',
         comparator : function(v1, v2){
-          if(new Date(v1) < new Date(v2) && new Date(v1) >= new Date()){
+          var currentDate = new Date();
+          currentDate.setHours(0,0,0,0);
+
+          if(new Date(v1) < new Date(v2) && new Date(v1) >= currentDate){
             return true;
           } else {
             return false;
