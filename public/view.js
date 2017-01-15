@@ -91,7 +91,7 @@ var populateBookings = function(){
 
         $.get('/booking/' + bookingid, function(booking){
           if(payloadFlag === "xml") booking = x2js.xml_str2json(booking).booking;
-          if(payloadFlag === "form") booking = form2Json(booking);
+          if(payloadFlag === "form") booking = form2Json(booking.replace(/\+/g,'%20'));
 
           $('#bookings')
             .append('<div class="row" id=' + bookingid + '><div class="col-md-2"><p>' + booking.firstname + '</p></div><div class="col-md-2"><p>' + booking.lastname + '</p></div><div class="col-md-1"><p>' + booking.totalprice + '</p></div><div class="col-md-1"><p>' + booking.depositpaid + '</p></div><div class="col-md-1"><p>' + booking.dob + '</p></div><div class="col-md-2"><p>' + booking.bookingdates.checkin + '</p></div><div class="col-md-2"><p>' + booking.bookingdates.checkout +
@@ -111,7 +111,7 @@ var showEditBooking = function(id){
 
   $.get('/booking/' + id, function(booking){
     if(payloadFlag === "xml") booking = x2js.xml_str2json(booking).booking;
-    if(payloadFlag === "form") booking = form2Json(booking);
+    if(payloadFlag === "form") booking = form2Json(booking.replace(/\+/g,'%20'));
 
     $('#editBookingId').val(id);
     $('#editFirstname').val(booking.firstname);
