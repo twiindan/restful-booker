@@ -33,14 +33,18 @@ exports.returnRuleSet = function(){
               currentDate.setDate(currentDate.getDate() - 1)
               currentDate.setHours(0,0,0,0);
 
-              ageDifMs = currentDate - new Date(dob).getTime();
-              ageDate = new Date(ageDifMs);
-              age = Math.abs(ageDate.getUTCFullYear() - 1970);
+              if(new Date(dob) <= currentDate){
+                ageDifMs = currentDate - new Date(dob).getTime();
+                ageDate = new Date(ageDifMs);
+                age = Math.abs(ageDate.getUTCFullYear() - 1970);
 
-              if(age >= 21){
-                return true;
+                if(age >= 21){
+                  return true;
+                } else {
+                  return false;
+                }
               } else {
-                return false;
+                  return false;
               }
               break;
           }
