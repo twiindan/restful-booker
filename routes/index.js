@@ -43,17 +43,21 @@ router.get('/booking', function(req, res, next) {
   }
 
   if(features.indexFeature() === 'page' && typeof(req.query.page) != 'undefined'){
-    var skipCount = (req.query.page * 10) - 10;
+    if(req.query.page >= 0){
+      var skipCount = (req.query.page * 10) - 10;
 
-    Booking.getIDsLimit(query, skipCount, function(err, record){
-      var booking = parse.bookingids(req, record);
+      Booking.getIDsLimit(query, skipCount, function(err, record){
+        var booking = parse.bookingids(req, record);
 
-      if(!booking){
-        res.sendStatus(500);
-      } else {
-        res.send(booking);
-      }
-    })
+        if(!booking){
+          res.sendStatus(500);
+        } else {
+          res.send(booking);
+        }
+      })
+    } else {
+      res.sendStatus(500);
+    }
   } else {
     Booking.getIDs(query, function(err, record){
       var booking = parse.bookingids(req, record);
