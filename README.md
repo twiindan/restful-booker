@@ -21,6 +21,7 @@ export index=page|full
 export edit=partial|full
 export validation=server|client|both
 export auth=basic|query|token
+export version=nov1|nov2|yesv1|yesv2
 ```
 
 # API
