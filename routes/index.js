@@ -7,7 +7,9 @@ var router  = express.Router(),
     view    = require('../views/views'),
     features = require('../helpers/features'),
     validator = require('../helpers/validator'),
-    globalLogins = {};
+    exportFeature = require('../helpers/export'),
+    globalLogins = {},
+    exportUrl;
 
 router.get('/', function(req, res, next){
   view.index(function(render){
@@ -165,31 +167,23 @@ router.delete('/booking/:id', function(req, res, next) {
 });
 
 router.get('/export', function(req, res, next){
-  var loggedIn = false;
+  exportFeature.exportBehaviour(req, globalLogins, function(status, responsePayload){
+    if(responsePayload){
+      res.send(responsePayload);
+    } else {
+      res.sendStatus(status);
+    }
+  });
+});
 
-  switch(features.authFeature()){
-    case 'basic':
-      if(req.headers.authorization === 'Basic YWRtaW46cGFzc3dvcmQxMjM='){
-        loggedIn = true
-      }
-      break;
-    case 'query':
-      if(req.query.username === 'admin' && req.query.password === 'password123'){
-        loggedIn = true;
-      }
-      break;
-    case 'token':
-      if(globalLogins[req.cookies.token]){
-        loggedIn = true;
-      }
-      break;
-  }
-
-  if(loggedIn){
-      res.sendStatus(200);
-  } else {
-    res.sendStatus(403);
-  }
+router.get('/export/v[1-2]', function(req, res, next){
+  exportFeature.exportBehaviour(req, globalLogins, function(status, responsePayload){
+    if(responsePayload){
+      res.send(responsePayload);
+    } else {
+      res.sendStatus(status);
+    }
+  });
 });
 
 router.post('/auth', function(req, res, next){
@@ -208,6 +202,6 @@ router.post('/auth', function(req, res, next){
   } else {
     res.send({'reason': 'Bad credentials'});
   }
-})
+});
 
 module.exports = router;

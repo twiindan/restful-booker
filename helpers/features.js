@@ -45,3 +45,11 @@ exports.authFeature = function(){
     return 'query';
   }
 }
+
+exports.versionFeature = function(){
+  if(process.env.version){
+    return process.env.version
+  } else {
+    return 'nov1'
+  }
+}

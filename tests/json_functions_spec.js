@@ -10,7 +10,7 @@ var payload  = helpers.generateDobObjPayload('Sally', 'Brown', 111, true, 'Break
 describe('restful-booker', function () {
 
   it('responds to /ping', function testPing(done){
-    helpers.setEnv('json', 'string', 'full', 'full', 'server', 'basic', function(server){
+    helpers.setEnv('json', 'string', 'full', 'full', 'server', 'basic', 'nov1', function(server){
       request(server)
         .get('/ping')
         .expect(201, done);
@@ -18,7 +18,7 @@ describe('restful-booker', function () {
   });
 
   it('404 everything else', function testPath(done) {
-    helpers.setEnv('json', 'string', 'full', 'full', 'server', 'basic', function(server){
+    helpers.setEnv('json', 'string', 'full', 'full', 'server', 'basic', 'nov1', function(server){
       request(server)
         .get('/foo/bar')
         .expect(404, done);
@@ -30,7 +30,7 @@ describe('restful-booker', function () {
 describe('restful-booker - GET /booking - JSON feature switch', function () {
 
   it('responds with all booking ids when GET /booking', function(done){
-    helpers.setEnv('json', 'string', 'full', 'full', 'server', 'basic', function(server){
+    helpers.setEnv('json', 'string', 'full', 'full', 'server', 'basic', 'nov1', function(server){
       request(server)
         .post('/booking')
         .send(payload)
@@ -52,7 +52,7 @@ describe('restful-booker - GET /booking - JSON feature switch', function () {
   });
 
   it('responds with a subset of booking ids when searching by firstname date', function(done){
-    helpers.setEnv('json', 'string', 'full', 'full', 'server', 'basic', function(server){
+    helpers.setEnv('json', 'string', 'full', 'full', 'server', 'basic', 'nov1', function(server){
       request(server)
         .post('/booking')
         .send(payload)
@@ -73,7 +73,7 @@ describe('restful-booker - GET /booking - JSON feature switch', function () {
   });
 
   it('responds with a subset of booking ids when searching by lastname date', function(done){
-    helpers.setEnv('json', 'string', 'full', 'full', 'server', 'basic', function(server){
+    helpers.setEnv('json', 'string', 'full', 'full', 'server', 'basic', 'nov1', function(server){
       request(server)
         .post('/booking')
         .send(payload)
@@ -94,7 +94,7 @@ describe('restful-booker - GET /booking - JSON feature switch', function () {
   });
 
   it('responds with a subset of booking ids when searching for checkin date', function(done){
-    helpers.setEnv('json', 'string', 'full', 'full', 'server', 'basic', function(server){
+    helpers.setEnv('json', 'string', 'full', 'full', 'server', 'basic', 'nov1', function(server){
       request(server)
         .post('/booking')
         .send(payload)
@@ -115,7 +115,7 @@ describe('restful-booker - GET /booking - JSON feature switch', function () {
   });
 
   it('responds with a subset of booking ids when searching for checkout date', function(done){
-    helpers.setEnv('json', 'string', 'full', 'full', 'server', 'basic', function(server){
+    helpers.setEnv('json', 'string', 'full', 'full', 'server', 'basic', 'nov1', function(server){
       request(server)
         .post('/booking')
         .send(payload)
@@ -136,7 +136,7 @@ describe('restful-booker - GET /booking - JSON feature switch', function () {
   });
 
   it('responds with a subset of booking ids when searching for checkin and checkout date', function(done){
-    helpers.setEnv('json', 'string', 'full', 'full', 'server', 'basic', function(server){
+    helpers.setEnv('json', 'string', 'full', 'full', 'server', 'basic', 'nov1', function(server){
       request(server)
         .post('/booking')
         .send(payload)
@@ -161,7 +161,7 @@ describe('restful-booker - GET /booking - JSON feature switch', function () {
   });
 
   it('responds with a subset of booking ids when searching for name, checkin and checkout date', function(done){
-    helpers.setEnv('json', 'string', 'full', 'full', 'server', 'basic', function(server){
+    helpers.setEnv('json', 'string', 'full', 'full', 'server', 'basic', 'nov1', function(server){
       request(server)
         .post('/booking')
         .send(payload)
@@ -186,7 +186,7 @@ describe('restful-booker - GET /booking - JSON feature switch', function () {
   });
 
   it('responds with a 500 error when GET /booking with a bad date query string', function(done){
-    helpers.setEnv('json', 'string', 'full', 'full', 'server', 'basic', function(server){
+    helpers.setEnv('json', 'string', 'full', 'full', 'server', 'basic', 'nov1', function(server){
       request(server)
         .get('/booking?checkout=2013-02-0')
         .expect(500, done)
@@ -196,7 +196,7 @@ describe('restful-booker - GET /booking - JSON feature switch', function () {
   it('responds with a page of entries when GET /booking is feature flagged with pagination', function(done) {
     this.timeout(10000);
 
-    helpers.setEnv('json', 'string', 'page', 'full', 'server', 'basic', function(server){
+    helpers.setEnv('json', 'string', 'page', 'full', 'server', 'basic', 'nov1', function(server){
       var count = 0;
       var limit = 15;
 
@@ -234,7 +234,7 @@ describe('restful-booker - GET /booking - JSON feature switch', function () {
   });
 
   it('responds with a payload when GET /booking/{id}', function(done){
-    helpers.setEnv('json', 'string', 'full', 'full', 'server', 'basic', function(server){
+    helpers.setEnv('json', 'string', 'full', 'full', 'server', 'basic', 'nov1', function(server){
       request(server)
         .post('/booking')
         .send(payload)
@@ -253,7 +253,7 @@ describe('restful-booker - GET /booking - JSON feature switch', function () {
 describe('restful-booker - POST /booking - JSON feature switch', function () {
 
   it('responds with the created booking and assigned booking id', function(done){
-    helpers.setEnv('json', 'string', 'full', 'full', 'server', 'basic', function(server){
+    helpers.setEnv('json', 'string', 'full', 'full', 'server', 'basic', 'nov1', function(server){
       request(server)
         .post('/booking')
         .set('Accept', 'application/json')
@@ -268,7 +268,7 @@ describe('restful-booker - POST /booking - JSON feature switch', function () {
   });
 
   it('responds with the correct assigned booking id when multiple payloads are sent', function(done){
-    helpers.setEnv('json', 'string', 'full', 'full', 'server', 'basic', function(server){
+    helpers.setEnv('json', 'string', 'full', 'full', 'server', 'basic', 'nov1', function(server){
       request(server)
         .post('/booking')
         .send(payload)
@@ -287,7 +287,7 @@ describe('restful-booker - POST /booking - JSON feature switch', function () {
   });
 
   it('responds with a 200 when a payload with too many params are sent', function(done){
-    helpers.setEnv('json', 'string', 'full', 'full', 'server', 'basic', function(server){
+    helpers.setEnv('json', 'string', 'full', 'full', 'server', 'basic', 'nov1', function(server){
       var extraPayload = payload
       extraPayload.extra = 'bad'
 
@@ -304,7 +304,7 @@ describe('restful-booker - POST /booking - JSON feature switch', function () {
 describe('restful-booker POST /auth - JSON feature switch', function(){
 
   it('responds with a 200 and a token to use when POSTing a valid credential', function(done){
-    helpers.setEnv('json', 'string', 'full', 'full', 'server', 'basic', function(server){
+    helpers.setEnv('json', 'string', 'full', 'full', 'server', 'basic', 'nov1', function(server){
       request(server)
         .post('/auth')
         .send({'username': 'admin', 'password': 'password123'})
@@ -317,7 +317,7 @@ describe('restful-booker POST /auth - JSON feature switch', function(){
   })
 
   it('responds with a 200 and a message informing of login failed when POSTing invalid credential', function(done){
-    helpers.setEnv('json', 'string', 'full', 'full', 'server', 'basic', function(server){
+    helpers.setEnv('json', 'string', 'full', 'full', 'server', 'basic', 'nov1', function(server){
       request(server)
         .post('/auth')
         .send({'username': 'nimda', 'password': '321drowssap'})
@@ -334,7 +334,7 @@ describe('restful-booker POST /auth - JSON feature switch', function(){
 describe('restful-booker - PUT /booking - JSON feature switch', function () {
 
   it('responds with a 200 and an updated payload using auth', function(done){
-    helpers.setEnv('json', 'string', 'full', 'full', 'server', 'basic', function(server){
+    helpers.setEnv('json', 'string', 'full', 'full', 'server', 'basic', 'nov1', function(server){
       request(server)
         .post('/booking')
         .send(payload)
@@ -351,18 +351,12 @@ describe('restful-booker - PUT /booking - JSON feature switch', function () {
   });
 
   it('responds with a 405 when attempting to update a booking that does not exist', function(done){
-    helpers.setEnv('json', 'string', 'full', 'full', 'server', 'basic', function(server){
+    helpers.setEnv('json', 'string', 'full', 'full', 'server', 'basic', 'nov1', function(server){
       request(server)
-      .post('/auth')
-      .send({'username': 'admin', 'password': 'password123'})
-      .then(function(res){
-        request(server)
-          .put('/booking/100000')
-          .set('Accept', 'application/json')
-          .set('Cookie', 'token=' + res.body.token)
-          .send(payload2)
-          .expect(405, done);
-      })
+        .put('/booking/100000')
+        .set('Accept', 'application/json')
+        .send(payload2)
+        .expect(405, done);
     });
   });
 
@@ -371,19 +365,13 @@ describe('restful-booker - PUT /booking - JSON feature switch', function () {
 describe('restful-booker DELETE /booking - JSON feature switch', function(){
 
   it('responds with a 201 when deleting an existing booking', function(done){
-    helpers.setEnv('json', 'string', 'full', 'full', 'server', 'basic', function(server){
+    helpers.setEnv('json', 'string', 'full', 'full', 'server', 'basic', 'nov1', function(server){
       request(server)
         .post('/booking')
         .send(payload)
-        .then(function(){
-          return request(server)
-            .post('/auth')
-            .send({'username': 'admin', 'password': 'password123'})
-        })
         .then(function(res){
           return request(server)
             .delete('/booking/1')
-            .set('Cookie', 'token=' + res.body.token)
             .expect(201)
         }).then(function(){
           request(server)
@@ -394,7 +382,7 @@ describe('restful-booker DELETE /booking - JSON feature switch', function(){
   });
 
   it('responds with a 201 when deleting an existing booking with a basic auth header', function(done){
-    helpers.setEnv('json', 'string', 'full', 'full', 'server', 'basic', function(server){
+    helpers.setEnv('json', 'string', 'full', 'full', 'server', 'basic', 'nov1', function(server){
       request(server)
         .post('/booking')
         .send(payload)
@@ -412,16 +400,10 @@ describe('restful-booker DELETE /booking - JSON feature switch', function(){
   });
 
   it('responds with a 405 when deleting a non existing booking', function(done){
-    helpers.setEnv('json', 'string', 'full', 'full', 'server', 'basic', function(server){
+    helpers.setEnv('json', 'string', 'full', 'full', 'server', 'basic', 'nov1', function(server){
       request(server)
-        .post('/auth')
-        .send({'username': 'admin', 'password': 'password123'})
-        .then(function(res){
-          request(server)
-            .delete('/booking/1')
-            .set('Cookie', 'token=' + res.body.token)
-            .expect(405, done)
-        })
+        .delete('/booking/1')
+        .expect(405, done)
     });
   });
 
@@ -430,7 +412,7 @@ describe('restful-booker DELETE /booking - JSON feature switch', function(){
 describe('Restful-booker - booking count', function(){
 
   it('responds with a 200 and the count when GET /count', function(done){
-    helpers.setEnv('json', 'string', 'full', 'full', 'server', 'basic', function(server){
+    helpers.setEnv('json', 'string', 'full', 'full', 'server', 'basic', 'nov1', function(server){
       request(server)
         .post('/booking')
         .send(payload)
@@ -444,7 +426,6 @@ describe('Restful-booker - booking count', function(){
             .get('/booking/count')
             .expect(200)
             .expect(function(res){
-              console.log(res.body);
               res.body.count.should.equal(2)
             })
             .end(done)

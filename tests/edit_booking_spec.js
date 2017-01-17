@@ -35,20 +35,14 @@ parseNumbers = function(str) {
 describe('restful-booker - Edit feature switch', function () {
 
   it('responds with a 200 and updated payload using JSON full record edit feature switch on PUT /booking', function(done){
-    helpers.setEnv('json', 'string', 'full', 'full', 'server', 'basic', function(server){
+    helpers.setEnv('json', 'string', 'full', 'full', 'server', 'basic', 'nov1', function(server){
       request(server)
         .post('/booking')
         .send(payload)
-        .then(function(){
-          return request(server)
-            .post('/auth')
-            .send({'username': 'admin', 'password': 'password123'})
-        })
         .then(function(res){
           request(server)
             .put('/booking/1')
             .set('Accept', 'application/json')
-            .set('Cookie', 'token=' + res.body.token)
             .send(payload2)
             .expect(200)
             .expect(payload2, done);
@@ -57,30 +51,18 @@ describe('restful-booker - Edit feature switch', function () {
   });
 
   it('responds with a 200 and updated payload using XML full record edit feature switch on PUT /booking', function(done){
-    helpers.setEnv('xml', 'string', 'full', 'full', 'server', 'basic', function(server){
+    helpers.setEnv('xml', 'string', 'full', 'full', 'server', 'basic', 'nov1', function(server){
       xmlPayload = js2xmlparser('booking', payload);
       xmlPayload2 = js2xmlparser('booking', payload2);
 
-      var token;
-
       request(server)
-        .post('/auth')
+        .post('/booking')
         .set('Content-type', 'text/xml')
-        .send('<auth><username>admin</username><password>password123</password></auth>')
-        .then(function(res){
-          xml2js(res.text, {explicitArray: false}, function (err, result) {
-            token = result.token
-          });
-          return request(server)
-            .post('/booking')
-            .set('Content-type', 'text/xml')
-            .send(xmlPayload)
-        })
+        .send(xmlPayload)
         .then(function(res){
           return xml2js(res.text, {explicitArray: false, valueProcessors: [parseNumbers, parseBooleans]}, function (err, result) {
             request(server)
               .put('/booking/' + result['created-booking'].bookingid)
-              .set('Cookie', 'token=' + token)
               .set('Content-type', 'text/xml')
               .send(xmlPayload2)
               .expect(200)
@@ -91,24 +73,17 @@ describe('restful-booker - Edit feature switch', function () {
   });
 
   it('responds with a 200 and updated payload using URL encoded full record edit feature switch on PUT /booking', function(done){
-    helpers.setEnv('form', 'string', 'full', 'full', 'server', 'basic', function(server){
+    helpers.setEnv('form', 'string', 'full', 'full', 'server', 'basic', 'nov1', function(server){
       var token;
 
+
       request(server)
-        .post('/auth')
+        .post('/booking')
         .set('Content-type', 'application/x-www-form-urlencoded')
-        .send('username=admin&password=password123')
-        .then(function(res){
-          token = res.text;
-          return request(server)
-            .post('/booking')
-            .set('Content-type', 'application/x-www-form-urlencoded')
-            .send(formurlencoded(payload))
-        })
+        .send(formurlencoded(payload))
         .then(function(res){
           request(server)
             .put('/booking/' + res.text.match(/[0-9]/)[0])
-            .set('Cookie', 'token=' + token)
             .set('Content-type', 'application/x-www-form-urlencoded')
             .send(formurlencoded(payload2))
             .expect(200)
@@ -118,15 +93,10 @@ describe('restful-booker - Edit feature switch', function () {
   });
 
   it('responds with a 400 when sending a partial payload in full edit mode', function(done){
-    helpers.setEnv('json', 'string', 'full', 'full', 'server', 'basic', function(server){
+    helpers.setEnv('json', 'string', 'full', 'full', 'server', 'basic', 'nov1', function(server){
       request(server)
         .post('/booking')
         .send(payload)
-        .then(function(){
-          return request(server)
-            .post('/auth')
-            .send({'username': 'admin', 'password': 'password123'})
-        })
         .then(function(res){
           request(server)
             .put('/booking/1')
@@ -139,15 +109,10 @@ describe('restful-booker - Edit feature switch', function () {
   });
 
   it('responds with a JSON partial record edit feature switch on PUT /booking', function(done){
-    helpers.setEnv('json', 'string', 'full', 'partial', 'server', 'basic', function(server){
+    helpers.setEnv('json', 'string', 'full', 'partial', 'server', 'basic', 'nov1', function(server){
       request(server)
         .post('/booking')
         .send(payload)
-        .then(function(){
-          return request(server)
-            .post('/auth')
-            .send({'username': 'admin', 'password': 'password123'})
-        })
         .then(function(res){
           request(server)
             .put('/booking/1')
@@ -161,31 +126,19 @@ describe('restful-booker - Edit feature switch', function () {
   });
 
   it('responds with a XML partial record edit feature switch on PUT /booking', function(done){
-    helpers.setEnv('xml', 'string', 'full', 'partial', 'server', 'basic', function(server){
+    helpers.setEnv('xml', 'string', 'full', 'partial', 'server', 'basic', 'nov1', function(server){
       xmlPayload = js2xmlparser('booking', payload);
       xmlPayload2 = js2xmlparser('booking', payload2);
       xmlPartialPayload = js2xmlparser('booking', partialPayload);
 
-      var token;
-
       request(server)
-        .post('/auth')
+        .post('/booking')
         .set('Content-type', 'text/xml')
-        .send('<auth><username>admin</username><password>password123</password></auth>')
-        .then(function(res){
-          xml2js(res.text, {explicitArray: false}, function (err, result) {
-            token = result.token
-          });
-          return request(server)
-            .post('/booking')
-            .set('Content-type', 'text/xml')
-            .send(xmlPayload)
-        })
+        .send(xmlPayload)
         .then(function(res){
           return xml2js(res.text, {explicitArray: false, valueProcessors: [parseNumbers, parseBooleans]}, function (err, result) {
             request(server)
               .put('/booking/' + result['created-booking'].bookingid)
-              .set('Cookie', 'token=' + token)
               .set('Content-type', 'text/xml')
               .send(xmlPartialPayload)
               .expect(200)
@@ -196,24 +149,15 @@ describe('restful-booker - Edit feature switch', function () {
   });
 
   it('responds with a URL encoded partial record edit feature switch on PUT /booking', function(done){
-    helpers.setEnv('form', 'string', 'full', 'partial', 'server', 'basic', function(server){
-      var token;
+    helpers.setEnv('form', 'string', 'full', 'partial', 'server', 'basic', 'nov1', function(server){
 
       request(server)
-        .post('/auth')
+        .post('/booking')
         .set('Content-type', 'application/x-www-form-urlencoded')
-        .send('username=admin&password=password123')
-        .then(function(res){
-          token = res.text;
-          return request(server)
-            .post('/booking')
-            .set('Content-type', 'application/x-www-form-urlencoded')
-            .send(formurlencoded(payload))
-        })
+        .send(formurlencoded(payload))
         .then(function(res){
           request(server)
             .put('/booking/' + res.text.match(/[0-9]/)[0])
-            .set('Cookie', 'token=' + token)
             .set('Content-type', 'application/x-www-form-urlencoded')
             .send(formurlencoded(partialPayload))
             .expect(200)

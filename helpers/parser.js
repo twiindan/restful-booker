@@ -117,3 +117,26 @@ exports.token = function(token, callback){
       break;
   }
 }
+
+exports.uglifyExport = function(bookings, callback){
+  var payload = {}
+
+  if(bookings.length !== 0){
+    var count = 0;
+    var limit = bookings.length - 1;
+
+    (addBooking = function(){
+      payload['record' + count] = bookings[count].firstname + ' ' + bookings[count].lastname + ' - ' + bookings[count].totalprice;
+
+      if(count < limit){
+        count += 1;
+        addBooking();
+      } else {
+        callback(payload)
+      }
+    })()
+  } else {
+    callback(payload)
+  }
+
+}

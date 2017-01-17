@@ -23,7 +23,7 @@ var payloadCompare  = helpers.generateDobPayload('Sally', 'Payload1', 111, true,
 describe('restful-booker - Boolean date validation feature switch', function () {
 
   it('should return a 200 when submitting valid boolean DOB validation - JSON', function(done){
-    helpers.setEnv('json', 'boolean', 'full', 'full', 'server', 'basic', function(server){
+    helpers.setEnv('json', 'boolean', 'full', 'full', 'server', 'basic', 'nov1', function(server){
       request(server)
         .post('/booking')
         .send(payloadBool)
@@ -32,7 +32,7 @@ describe('restful-booker - Boolean date validation feature switch', function () 
   });
 
   it('should return a 400 when submitting invalid boolean DOB validation - JSON', function(done){
-    helpers.setEnv('json', 'boolean', 'full', 'full', 'server', 'basic', function(server){
+    helpers.setEnv('json', 'boolean', 'full', 'full', 'server', 'basic', 'nov1', function(server){
       request(server)
         .post('/booking')
         .send(payloadBool2)
@@ -43,7 +43,7 @@ describe('restful-booker - Boolean date validation feature switch', function () 
   it('should return a 200 when submitting valid boolean DOB validation - XML', function(done){
     var xmlPayload = js2xmlparser('booking', payloadBool);
 
-    helpers.setEnv('xml', 'boolean', 'full', 'full', 'server', 'basic', function(server){
+    helpers.setEnv('xml', 'boolean', 'full', 'full', 'server', 'basic', 'nov1', function(server){
       request(server)
         .post('/booking')
         .set('Content-type', 'text/xml')
@@ -55,7 +55,7 @@ describe('restful-booker - Boolean date validation feature switch', function () 
   it('should return a 400 when submitting invalid boolean DOB validation - XML', function(done){
     var xmlPayload = js2xmlparser('booking', payloadBool2);
 
-    helpers.setEnv('xml', 'boolean', 'full', 'full', 'server', 'basic', function(server){
+    helpers.setEnv('xml', 'boolean', 'full', 'full', 'server', 'basic', 'nov1', function(server){
       request(server)
         .post('/booking')
         .set('Content-type', 'text/xml')
@@ -65,7 +65,7 @@ describe('restful-booker - Boolean date validation feature switch', function () 
   });
 
   it('should return a 200 when submitting valid boolean DOB validation - Form', function(done){
-    helpers.setEnv('form', 'boolean', 'full', 'full', 'server', 'basic', function(server){
+    helpers.setEnv('form', 'boolean', 'full', 'full', 'server', 'basic', 'nov1', function(server){
       request(server)
         .post('/booking')
         .set('Content-type', 'application/x-www-form-urlencoded')
@@ -75,7 +75,7 @@ describe('restful-booker - Boolean date validation feature switch', function () 
   });
 
   it('should return a 400 when submitting invalid boolean DOB validation - Form', function(done){
-    helpers.setEnv('form', 'boolean', 'full', 'full', 'server', 'basic', function(server){
+    helpers.setEnv('form', 'boolean', 'full', 'full', 'server', 'basic', 'nov1', function(server){
       request(server)
         .post('/booking')
         .set('Content-type', 'application/x-www-form-urlencoded')
@@ -89,7 +89,7 @@ describe('restful-booker - Boolean date validation feature switch', function () 
 describe('restful-booker - String date validation feature switch', function () {
 
   it('should return a 200 when submitting valid string DOB validation - Form', function(done){
-    helpers.setEnv('json', 'string', 'full', 'full', 'server', 'basic', function(server){
+    helpers.setEnv('json', 'string', 'full', 'full', 'server', 'basic', 'nov1', function(server){
       request(server)
         .post('/booking')
         .send(payloadStr)
@@ -98,7 +98,7 @@ describe('restful-booker - String date validation feature switch', function () {
   });
 
   it('should return a 400 when submitting an invalid string DOB validation - JSON', function(done){
-    helpers.setEnv('json', 'string', 'full', 'full', 'server', 'basic', function(server){
+    helpers.setEnv('json', 'string', 'full', 'full', 'server', 'basic', 'nov1', function(server){
       request(server)
         .post('/booking')
         .send(payloadStr2)
@@ -107,7 +107,7 @@ describe('restful-booker - String date validation feature switch', function () {
   });
 
   it('should return a 200 when submitting valid string DOB validation - XML', function(done){
-    helpers.setEnv('xml', 'string', 'full', 'full', 'server', 'basic', function(server){
+    helpers.setEnv('xml', 'string', 'full', 'full', 'server', 'basic', 'nov1', function(server){
       request(server)
         .post('/booking')
         .set('Content-type', 'text/xml')
@@ -117,7 +117,7 @@ describe('restful-booker - String date validation feature switch', function () {
   });
 
   it('should return a 400 when submitting an invalid string DOB validation - XML', function(done){
-    helpers.setEnv('xml', 'string', 'full', 'full', 'server', 'basic', function(server){
+    helpers.setEnv('xml', 'string', 'full', 'full', 'server', 'basic', 'nov1', function(server){
       request(server)
         .post('/booking')
         .set('Content-type', 'text/xml')
@@ -127,7 +127,7 @@ describe('restful-booker - String date validation feature switch', function () {
   });
 
   it('should return a 200 when submitting valid string DOB validation - Form', function(done){
-    helpers.setEnv('form', 'string', 'full', 'full', 'server', 'basic', function(server){
+    helpers.setEnv('form', 'string', 'full', 'full', 'server', 'basic', 'nov1', function(server){
       request(server)
         .post('/booking')
         .set('Content-type', 'application/x-www-form-urlencoded')
@@ -137,7 +137,7 @@ describe('restful-booker - String date validation feature switch', function () {
   });
 
   it('should return a 400 when submitting an invalid string DOB validation - Form', function(done){
-    helpers.setEnv('form', 'string', 'full', 'full', 'server', 'basic', function(server){
+    helpers.setEnv('form', 'string', 'full', 'full', 'server', 'basic', 'nov1', function(server){
       request(server)
         .post('/booking')
         .set('Content-type', 'application/x-www-form-urlencoded')
@@ -151,7 +151,7 @@ describe('restful-booker - String date validation feature switch', function () {
 describe('restful-booker - GT/LT date validation feature switch', function () {
 
   it('should return a 200 when submitting a valid date above 21 - JSON', function(done){
-    helpers.setEnv('json', 'compare', 'full', 'full', 'server', 'basic', function(server){
+    helpers.setEnv('json', 'compare', 'full', 'full', 'server', 'basic', 'nov1', function(server){
       request(server)
         .post('/booking')
         .send(payloadCompare)
@@ -160,7 +160,7 @@ describe('restful-booker - GT/LT date validation feature switch', function () {
   });
 
   it('should return a 400 when submitting a valid date below 21 - JSON', function(done){
-    helpers.setEnv('json', 'compare', 'full', 'full', 'server', 'basic', function(server){
+    helpers.setEnv('json', 'compare', 'full', 'full', 'server', 'basic', 'nov1', function(server){
       request(server)
         .post('/booking')
         .send(payloadCompare2)
@@ -169,7 +169,7 @@ describe('restful-booker - GT/LT date validation feature switch', function () {
   });
 
   it('should return a 200 when submitting a valid date above 21 - XML', function(done){
-    helpers.setEnv('xml', 'compare', 'full', 'full', 'server', 'basic', function(server){
+    helpers.setEnv('xml', 'compare', 'full', 'full', 'server', 'basic', 'nov1', function(server){
       request(server)
         .post('/booking')
         .set('Content-type', 'text/xml')
@@ -179,7 +179,7 @@ describe('restful-booker - GT/LT date validation feature switch', function () {
   });
 
   it('should return a 400 when submitting a valid date below 21 - XML', function(done){
-    helpers.setEnv('xml', 'compare', 'full', 'full', 'server', 'basic', function(server){
+    helpers.setEnv('xml', 'compare', 'full', 'full', 'server', 'basic', 'nov1', function(server){
       request(server)
         .post('/booking')
         .set('Content-type', 'text/xml')
@@ -189,7 +189,7 @@ describe('restful-booker - GT/LT date validation feature switch', function () {
   });
 
   it('should return a 200 when submitting a valid date above 21 - Form', function(done){
-    helpers.setEnv('form', 'compare', 'full', 'full', 'server', 'basic', function(server){
+    helpers.setEnv('form', 'compare', 'full', 'full', 'server', 'basic', 'nov1', function(server){
       request(server)
         .post('/booking')
         .set('Content-type', 'application/x-www-form-urlencoded')
@@ -199,7 +199,7 @@ describe('restful-booker - GT/LT date validation feature switch', function () {
   });
 
   it('should return a 400 when submitting a valid date below 21 - Form', function(done){
-    helpers.setEnv('form', 'compare', 'full', 'full', 'server', 'basic', function(server){
+    helpers.setEnv('form', 'compare', 'full', 'full', 'server', 'basic', 'nov1', function(server){
       request(server)
         .post('/booking')
         .set('Content-type', 'application/x-www-form-urlencoded')

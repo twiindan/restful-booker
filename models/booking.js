@@ -61,6 +61,16 @@ exports.get = function(id, callback){
   })
 },
 
+exports.getAll = function(callback){
+  Booking.find({}).select('bookingid -_id -bookingid').exec(function(err, bookings){
+    if(err){
+      callback(err, null);
+    } else {
+      callback(null, bookings)
+    }
+  })
+},
+
 exports.create = function(payload, callback){
   var newBooking = new Booking(payload);
 
