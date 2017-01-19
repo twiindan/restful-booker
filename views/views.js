@@ -63,33 +63,29 @@ exports.index = function(callback){
 
 var createForm = function(type){
   var form = '                 <div class="row">' +
-             '                   <div class="col-md-4">' +
-             '                     <input id="' + type + 'Firstname" class="input" placeholder="Firstname"/>' +
+             '                   <div class="col-md-6">' +
+             '                     <input id="' + type + 'Firstname" type="text" class="input" placeholder="Firstname"/>' +
              '                   </div>' +
-             '                   <div class="col-md-4">' +
-             '                     <input id="' + type + 'Lastname" class="input" placeholder="Lastname"/>' +
-             '                   </div>' +
-             '                   <div class="col-md-2">' +
-             '                     <input id="' + type + 'Totalprice" class="input"  placeholder="Price" style="width: 100%"/>' +
-             '                   </div>' +
-             '                   <div class="col-md-2">' +
-             '                     <select id="' + type + 'Depositpaid">' +
-             '                       <option value="true">true</option>' +
-             '                       <option value="false">false</option>' +
-             '                     </select>' +
+             '                   <div class="col-md-6">' +
+             '                     <input id="' + type + 'Lastname" type="text" class="input" placeholder="Lastname"/>' +
              '                   </div>' +
              '                 </div>' +
              '                 <br />' +
-             '                 <div class="row">';
+             '                 <div class="row">' +
+             '                   <div class="col-md-2">' +
+             '                     <input id="' + type + 'Totalprice" type="text" class="input"  placeholder="Price" style="width: 100%"/>' +
+             '                   </div>' +
+             '                   <div class="col-md-4"></div>';
 
   switch (features.dobFeature()) {
     case 'boolean':
-        form += '              <div class="col-md-4">' +
-                '                <input id="' + type + 'Age" class="input" type="checkbox" value="true">' +
+        form += '              <div class="col-md-3">' +
+                '                <label for="' + type + 'Age">Over 21?</label> <input id="' + type + 'Age" class="input" type="checkbox" value="true">' +
                 '              </div>';
       break;
     case 'string':
-        form += '              <div class="col-md-4">' +
+        form += '              <div class="col-md-3">' +
+                '                <label for="' + type + 'Age">Over 21?</label>' +
                 '                <select id="' + type + 'Age">' +
                 '                  <option value="over21">true</option>' +
                 '                  <option value="under21">false</option>' +
@@ -97,18 +93,30 @@ var createForm = function(type){
                 '             </div>';
       break;
       case 'compare':
-          form += '              <div class="col-md-4">' +
-                  '                <input id="' + type + 'Age" placeholder="Age" class="datepicker input"/>' +
+          form += '              <div class="col-md-3">' +
+                  '                <input id="' + type + 'Age" type="text" placeholder="Date of birth" class="dobDatePicker input"/>' +
                   '              </div>';
         break;
   }
 
-  form += '                <div class="col-md-4">' +
-          '                  <input id="' + type + 'Checkin" class="datepicker input" placeholder="Checkin"/>' +
+form +=   '                <div class="col-md-3">' +
+          '                  <label for="' + type + 'Depositpaid">Deposit?</label>' +
+          '                  <select id="' + type + 'Depositpaid">' +
+          '                    <option value="true">true</option>' +
+          '                    <option value="false">false</option>' +
+          '                  </select>' +
           '                </div>' +
-          '                <div class="col-md-4">' +
-          '                  <input id="' + type + 'Checkout" class="datepicker input" placeholder="Checkout"/>' +
+          '              </div>' +
+          '              <br />' +
+          '              <div class="row">' +
+          '                <div class="col-md-3">' +
+          '                  <input id="' + type + 'Checkin" type="text" class="datepicker input" placeholder="Checkin"/>' +
           '                </div>' +
+          '                <div class="col-md-3"></div>' +
+          '                <div class="col-md-3">' +
+          '                  <input id="' + type + 'Checkout" type="text" class="datepicker input" placeholder="Checkout"/>' +
+          '                </div>' +
+          '                <div class="col-md-3"></div>' +
           '              </div>';
 
   return form;

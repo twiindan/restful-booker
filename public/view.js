@@ -36,6 +36,11 @@ $( document ).ready(function() {
     dateFormat: 'yy-mm-dd'
   });
 
+  $('.dobDatePicker').datepicker({
+    defaultDate : -7665,
+    dateFormat: 'yy-mm-dd'
+  });
+
   populateBookings();
 
   $('#editModal').on('hidden.bs.modal', function () {
@@ -45,6 +50,10 @@ $( document ).ready(function() {
   $('#form').on('hidden.bs.modal', function () {
     location.reload();
   });
+
+  $('input').on('click', function (){
+    $(this).css('border','');
+  })
 });
 
 function getUrlVars(){
@@ -99,8 +108,8 @@ var populateBookings = function(){
             if(payloadFlag === "form") booking = form2Json(booking.replace(/\+/g,'%20'));
 
             $('#bookings')
-              .append('<div class="row" id=' + bookingid + '><div class="col-md-2"><p>' + booking.firstname + '</p></div><div class="col-md-2"><p>' + booking.lastname + '</p></div><div class="col-md-1"><p>' + booking.totalprice + '</p></div><div class="col-md-1"><p>' + booking.depositpaid + '</p></div><div class="col-md-1"><p>' + booking.dob + '</p></div><div class="col-md-2"><p>' + booking.bookingdates.checkin + '</p></div><div class="col-md-2"><p>' + booking.bookingdates.checkout +
-                      '</p></div><div class="col-md-1"><input type="button" value="Edit" onclick="showEditBooking(' + bookingid + ')" /> <input type="button" onclick="deleteBooking(' + bookingid + ')" value="Delete"/></div></div>');
+              .append('<div class="row bookingEntry" id=' + bookingid + '><div class="col-md-2"><p>' + booking.firstname + '</p></div><div class="col-md-2"><p>' + booking.lastname + '</p></div><div class="col-md-1"><p>' + booking.totalprice + '</p></div><div class="col-md-1"><p>' + booking.depositpaid + '</p></div><div class="col-md-1"><p>' + booking.dob + '</p></div><div class="col-md-2"><p>' + booking.bookingdates.checkin + '</p></div><div class="col-md-2"><p>' + booking.bookingdates.checkout +
+                      '</p></div><div class="col-md-1"><a href="#" onclick="showEditBooking(' + bookingid + ')" ><span class="glyphicon glyphicon-pencil"></span></a> <a href="#" onclick="deleteBooking(' + bookingid + ')"><span class="glyphicon glyphicon-trash"></span></a></div></div>');
           });
 
           if(count < limit){

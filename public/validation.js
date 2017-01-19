@@ -73,54 +73,36 @@ function highlightInputs(mode, message){
       $('#' + mode + 'Firstname').css('border','1px solid red');
 
       progress = false;
-      setTimeout(function() {
-        $('#' + mode + 'Firstname').css('border','');
-      }, 3000);
     }
 
     if('lastname' in message){
       $('#' + mode + 'Lastname').css('border','1px solid red');
 
       progress = false;
-      setTimeout(function() {
-        $('#' + mode + 'Lastname').css('border','');
-      }, 3000);
     }
 
     if('totalprice' in message){
       $('#' + mode + 'Totalprice').css('border','1px solid red');
 
       progress = false;
-      setTimeout(function() {
-        $('#' + mode + 'Totalprice').css('border','');
-      }, 3000);
     }
 
     if('bookingdates.checkin' in message){
       $('#' + mode + 'Checkin').css('border','1px solid red');
 
       progress = false;
-      setTimeout(function() {
-        $('#' + mode + 'Checkin').css('border','');
-      }, 3000);
     }
 
     if('bookingdates.checkout' in message){
       $('#' + mode + 'Checkout').css('border','1px solid red');
 
       progress = false;
-      setTimeout(function() {
-        $('#' + mode + 'Checkout').css('border','');
-      }, 3000);
     }
 
     if('dob' in message){
       $('#' + mode + 'Age').css('border','1px solid red');
 
       progress = false;
-      setTimeout(function() {
-        $('#' + mode + 'Age').css('border','');
-      }, 3000);
     }
 
     return false;
