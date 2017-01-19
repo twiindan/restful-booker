@@ -62,7 +62,7 @@ router.get('/booking', function(req, res, next) {
         var booking = parse.bookingids(req, record);
 
         if(!booking){
-          res.sendStatus(500);
+          res.sendStatus(204);
         } else {
           res.send(booking);
         }
@@ -75,7 +75,7 @@ router.get('/booking', function(req, res, next) {
       var booking = parse.bookingids(req, record);
 
       if(!booking){
-        res.sendStatus(500);
+        res.sendStatus(204);
       } else {
         res.send(booking);
       }
@@ -154,7 +154,6 @@ router.put('/booking/:id', function(req, res, next) {
 });
 
 router.delete('/booking/:id', function(req, res, next) {
-  // if(globalLogins[req.cookies.token] || req.headers.authorization == 'Basic YWRtaW46cGFzc3dvcmQxMjM='){
     Booking.get(req.params.id, function(err, record){
       if(record){
         Booking.delete(req.params.id, function(err){

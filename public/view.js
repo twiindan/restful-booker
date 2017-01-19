@@ -83,8 +83,10 @@ var populateBookings = function(){
           limit = payload.length - 1;
           break;
         case 'form':
-          payload = form2Json(data);
-          limit = Object.keys(payload).length - 1;
+          payload = $.map(form2Json(data), function(value, index){
+            return [value]
+          });
+          limit = payload.length - 1;
           break;
       }
 
