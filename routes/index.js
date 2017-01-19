@@ -38,32 +38,16 @@ router.get('/booking/count', function(req, res){
 router.get('/booking', function(req, res, next) {
   var query = {};
 
-  if(typeof(req.query.firstname) != 'undefined'){
-    query.firstname = req.query.firstname
-  }
-
-  if(typeof(req.query.lastname) != 'undefined'){
-    query.lastname = req.query.lastname
-  }
-
-  if(typeof(req.query.checkin) != 'undefined'){
-    query["bookingdates.checkin"] = {$gt: new Date(req.query.checkin).toISOString()}
-  }
-
-  if(typeof(req.query.checkout) != 'undefined'){
-    query["bookingdates.checkout"] = {$lt: new Date(req.query.checkout).toISOString()}
-  }
-
   if(features.indexFeature() === 'page' && typeof(req.query.page) != 'undefined'){
     if(req.query.page >= 0 && Number.isInteger(parseInt(req.query.page))){
       var skipCount = (req.query.page * 10) - 10;
 
       Booking.getIDsLimit(query, skipCount, function(err, record){
-        var booking = parse.bookingids(req, record);
-
         if(!booking){
           res.sendStatus(204);
         } else {
+          var booking = parse.bookingids(req, record);
+
           res.send(booking);
         }
       })

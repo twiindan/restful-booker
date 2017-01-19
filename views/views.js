@@ -4,13 +4,7 @@ var fs      = require('fs');
     features = require('../helpers/features')
 
 exports.index = function(callback){
-  var render = '       <div class="row">' +
-               '         <div class="col-md-1" id="prev"><a href="">Prev</a></div>' +
-               '         <div class="col-md-5"></div>' +
-               '         <div class="col-md-5"></div>' +
-               '         <div class="col-md-1" id="next"><a href="">Next</a></div>' +
-               '       </div>' +
-               '  <input type="hidden" id="payloadFlag" value="' + features.payloadFeature() + '" />' +
+  var render = '  <input type="hidden" id="payloadFlag" value="' + features.payloadFeature() + '" />' +
                '  <input type="hidden" id="indexFlag" value="' + features.indexFeature() + '" />' +
                '  <input type="hidden" id="validationFlag" value="' + features.validateFeature() + '" />' +
                '  <input type="hidden" id="editFlag" value="' + features.editFeature() + '" />';

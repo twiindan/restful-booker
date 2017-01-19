@@ -15,16 +15,16 @@ $( document ).ready(function() {
   currentPage = parseInt(getUrlVars()['page'])
 
   $('#editModal').modal({ show: false})
-  $('#prev a').attr('href', '/?page=' + (currentPage - 1));
-  $('#next a').attr('href', '/?page=' + (currentPage + 1));
+  $('.previous a').attr('href', '/?page=' + (currentPage - 1));
+  $('.next a').attr('href', '/?page=' + (currentPage + 1));
 
   if(getUrlVars()['page'] === '1' || indexFlag != 'page'){
-    $('#prev').css('visibility', 'hidden')
+    $('.previous').css('visibility', 'hidden')
   }
 
   $.get('/booking/count', function(data){
     if(data.count - (currentPage * 10) <= 0){
-      $('#next').css('visibility', 'hidden');
+      $('.next').css('visibility', 'hidden');
     }
   });
 
@@ -63,7 +63,7 @@ function getUrlVars(){
   {
       hash = hashes[i].split('=');
       vars.push(hash[0]);
-      vars[hash[0]] = hash[1];
+      vars[hash[0]] = hash[1].match(/[0-9]+/)[0];
   }
   return vars;
 }
