@@ -43,7 +43,7 @@ router.get('/booking', function(req, res, next) {
       var skipCount = (req.query.page * 10) - 10;
 
       Booking.getIDsLimit(query, skipCount, function(err, record){
-        if(!booking){
+        if(!record){
           res.sendStatus(204);
         } else {
           var booking = parse.bookingids(req, record);
