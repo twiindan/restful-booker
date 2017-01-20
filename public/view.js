@@ -6,27 +6,34 @@ $( document ).ready(function() {
   payloadFlag = $('#payloadFlag').val();
   indexFlag = $('#indexFlag').val();
 
+  $('.alert').hide();
+  $('#editModal').modal({ show: false})
+
   if($('#editFlag').val() === 'partial'){
     $('#editModal input, #editModal select').change(function(){
       partialEditBooking($(this).val(), $(this).attr('id'), $('#editBookingId').val())
     })
   }
 
-  currentPage = parseInt(getUrlVars()['page'])
+  if(indexFlag == 'page'){
+    currentPage = parseInt(getUrlVars()['page'])
 
-  $('#editModal').modal({ show: false})
-  $('.previous a').attr('href', '/?page=' + (currentPage - 1));
-  $('.next a').attr('href', '/?page=' + (currentPage + 1));
+    $('.previous a').attr('href', '/?page=' + (currentPage - 1));
+    $('.next a').attr('href', '/?page=' + (currentPage + 1));
 
-  if(getUrlVars()['page'] === '1' || indexFlag != 'page'){
-    $('.previous').css('visibility', 'hidden')
-  }
-
-  $.get('/booking/count', function(data){
-    if(data.count - (currentPage * 10) <= 0){
-      $('.next').css('visibility', 'hidden');
+    if(getUrlVars()['page'] === '1'){
+      $('.previous').css('visibility', 'hidden')
     }
-  });
+
+    $.get('/booking/count', function(data){
+      if(data.count - (currentPage * 10) <= 0){
+        $('.next').css('visibility', 'hidden');
+      }
+    });
+  } else {
+    $('.previous').css('visibility', 'hidden')
+    $('.next').css('visibility', 'hidden')
+  }
 
   $('.datepicker').datepicker({
     dateFormat: 'yy-mm-dd'
