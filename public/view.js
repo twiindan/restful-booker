@@ -58,7 +58,7 @@ $( document ).ready(function() {
     location.reload();
   });
 
-  $('input').on('click', function (){
+  $('input').on('focus', function (){
     $(this).css('border','');
   })
 });
