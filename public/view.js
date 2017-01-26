@@ -115,7 +115,7 @@ var populateBookings = function(){
             if(payloadFlag === "form") booking = form2Json(booking.replace(/\+/g,'%20'));
 
             $('#bookings')
-              .append('<div class="row bookingEntry" id=' + bookingid + '><div class="col-md-2"><p>' + booking.firstname + '</p></div><div class="col-md-2"><p>' + booking.lastname + '</p></div><div class="col-md-1"><p>' + booking.totalprice + '</p></div><div class="col-md-1"><p>' + booking.depositpaid + '</p></div><div class="col-md-1"><p>' + booking.dob + '</p></div><div class="col-md-2"><p>' + booking.bookingdates.checkin + '</p></div><div class="col-md-2"><p>' + booking.bookingdates.checkout +
+              .append('<div class="row bookingEntry" id=' + bookingid + '><div class="col-md-2"><p>' + booking.firstname + '</p></div><div class="col-md-2"><p>' + booking.lastname + '</p></div><div class="col-md-1"><p>' + booking.totalprice + '</p></div><div class="col-md-2"><p>' + booking.depositpaid + '</p></div><div class="col-md-2"><p>' + booking.bookingdates.checkin + '</p></div><div class="col-md-2"><p>' + booking.bookingdates.checkout +
                       '</p></div><div class="col-md-1"><a href="#" onclick="showEditBooking(' + bookingid + ')" ><span class="glyphicon glyphicon-pencil"></span></a> <a href="#" onclick="deleteBooking(' + bookingid + ')"><span class="glyphicon glyphicon-trash"></span></a></div></div>');
           });
 
