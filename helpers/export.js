@@ -1,8 +1,9 @@
 var parse   = require('../helpers/parser'),
     features = require('../helpers/features'),
-    Booking = require('../models/booking');
+    Booking = require('../models/booking'),
+    globalLogins = {};
 
-exports.exportBehaviour = function(req, globalLogins, callback){
+exports.exportBehaviour = function(req, callback){
   var featureSwitch = features.versionFeature();
 
   switch (true) {
@@ -25,7 +26,8 @@ exports.exportBehaviour = function(req, globalLogins, callback){
           }
           break;
         case 'query':
-          if(req.query.username === 'admin' && req.query.password === 'password123'){
+          if(globalLogins[req.query.token]){
+            delete globalLogins[req.query.token];
             loggedIn = true;
           }
           break;
@@ -54,4 +56,10 @@ exports.exportBehaviour = function(req, globalLogins, callback){
         callback(403, null);
       }
   }
+},
+
+exports.setGlobalLogin = function(key, callback){
+  globalLogins[key] = true;
+
+  callback();
 }

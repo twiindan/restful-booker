@@ -8,7 +8,6 @@ var router  = express.Router(),
     features = require('../helpers/features'),
     validator = require('../helpers/validator'),
     exportFeature = require('../helpers/export'),
-    globalLogins = {},
     exportUrl;
 
 router.get('/', function(req, res, next){
@@ -37,6 +36,22 @@ router.get('/booking/count', function(req, res){
 
 router.get('/booking', function(req, res, next) {
   var query = {};
+
+  if(typeof(req.query.firstname) != 'undefined'){
+    query.firstname = req.query.firstname
+  }
+
+  if(typeof(req.query.lastname) != 'undefined'){
+    query.lastname = req.query.lastname
+  }
+
+  if(typeof(req.query.checkin) != 'undefined'){
+    query["bookingdates.checkin"] = {$gt: new Date(req.query.checkin).toISOString()}
+  }
+
+  if(typeof(req.query.checkout) != 'undefined'){
+    query["bookingdates.checkout"] = {$lt: new Date(req.query.checkout).toISOString()}
+  }
 
   if(features.indexFeature() === 'page' && typeof(req.query.page) != 'undefined'){
     if(req.query.page >= 0 && Number.isInteger(parseInt(req.query.page))){
@@ -150,7 +165,7 @@ router.delete('/booking/:id', function(req, res, next) {
 });
 
 router.get('/export', function(req, res, next){
-  exportFeature.exportBehaviour(req, globalLogins, function(status, responsePayload){
+  exportFeature.exportBehaviour(req, function(status, responsePayload){
     if(responsePayload){
       res.send(responsePayload);
     } else {
@@ -160,7 +175,7 @@ router.get('/export', function(req, res, next){
 });
 
 router.get('/export/v[1-2]', function(req, res, next){
-  exportFeature.exportBehaviour(req, globalLogins, function(status, responsePayload){
+  exportFeature.exportBehaviour(req, function(status, responsePayload){
     if(responsePayload){
       res.send(responsePayload);
     } else {
@@ -179,9 +194,9 @@ router.post('/auth', function(req, res, next){
                     .toString('hex')
                     .slice(0,15);
 
-    globalLogins[token] = true;
-
-    res.send(parse.token(token));
+    exportFeature.setGlobalLogin(token, function(){
+      res.send(parse.token(token));
+    });
   } else {
     res.send({'reason': 'Bad credentials'});
   }

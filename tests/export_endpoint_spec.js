@@ -26,18 +26,32 @@ describe('restful-booker - /Export authorisation feature switch', function () {
     });
   });
 
-  it('should return a 200 when GET /export with good query string', function(done){
+  it('should return a 200 when GET /export with a good query token and then a 403 on second use', function(done){
     helpers.setEnv('json', 'string', 'full', 'full', 'server', 'query', 'nov1', function(server){
+      var token;
+
       request(server)
-        .get('/export?username=admin&password=password123')
-        .expect(200, done);
+        .post('/auth')
+        .send({'username': 'admin', 'password': 'password123'})
+        .expect(200)
+        .then(function(res){
+          token = res.body.token;
+          return request(server)
+            .get('/export?token=' + token)
+            .expect(200)
+        })
+        .then(function(res){
+          request(server)
+            .get('/export?token=' + token)
+            .expect(403, done)
+        })
     });
   });
 
   it('should return a 403 when GET /export with bad query string', function(done){
     helpers.setEnv('json', 'string', 'full', 'full', 'server', 'query', 'nov1', function(server){
       request(server)
-        .get('/export?username=nimda&password=321drowssap')
+        .get('/export?token=abcde12345')
         .expect(403, done);
     });
   });
