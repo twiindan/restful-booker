@@ -40,12 +40,17 @@ var createBooking = function(){
         "lastname": $('#createLastname').val(),
         "totalprice": $('#createTotalprice').val(),
         "depositpaid": $('#createDepositpaid').val(),
-        "dob": $('#createAge').val(),
         "bookingdates": {
             "checkin": $('#createCheckin').val(),
             "checkout": $('#createCheckout').val()
         },
       };
+
+  if($('#createAge').is(':checkbox')){
+    booking.dob = $('#createAge').prop('checked');
+  } else {
+    booking.dob = $('#createAge').val();
+  }
 
   var message = validate(booking, constraints);
 
@@ -57,19 +62,23 @@ var createBooking = function(){
 }
 
 var editBooking = function(){
-  var requestDetails = {},
-      booking = {
+  var booking = {
         "firstname": $('#editFirstname').val(),
         "lastname": $('#editLastname').val(),
         "totalprice": $('#editTotalprice').val(),
         "depositpaid": $('#editDepositpaid').val(),
-        "dob": $('#editAge').val(),
         "bookingdates": {
             "checkin": $('#editCheckin').val(),
             "checkout": $('#editCheckout').val()
         },
       },
       bookingId = $('#editBookingId').val();
+
+  if($('#editAge').is(':checkbox')){
+    booking.dob = $('#editAge').prop('checked');
+  } else {
+    booking.dob = $('#editAge').val();
+  }
 
   var message = validate(booking, constraints);
 
@@ -81,26 +90,29 @@ var editBooking = function(){
 };
 
 var partialEditBooking = function(value, item, bookingId){
-  var requestDetails = {},
-      booking = {
-        "dob": $('#editAge').val(),
-      };
+  var editPayload = {};
+
+  if($('#editAge').is(':checkbox')){
+    editPayload.dob = $('#editAge').prop('checked');
+  } else {
+    editPayload.dob = $('#editAge').val();
+  }
 
   var itemName = item.replace('edit','').toLowerCase();
 
   if(itemName == 'checkin' || itemName == 'checkout'){
-      booking['bookingdates'] = {
+      editPayload['bookingdates'] = {
           'checkin': $('#editCheckin').val(),
           'checkout': $('#editCheckout').val()
       }
-  } else {
-      booking[itemName] = value;
+  } else if(itemName !== 'age'){
+      editPayload[itemName] = value;
   }
 
-  var message = validate(booking, constraints);
+  var message = validate(editPayload, constraints);
 
   if(highlightInputs('edit', message)){
-    makeRequest('/booking/' + bookingId, 'PATCH', booking, 'edit', function(data){
+    makeRequest('/booking/' + bookingId, 'PATCH', editPayload, 'edit', function(data){
       $('#editStatus').text('Booking updated');
     });
   }

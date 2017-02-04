@@ -74,7 +74,7 @@ var createForm = function(type){
   switch (features.dobFeature()) {
     case 'boolean':
         form += '              <div class="col-md-3">' +
-                '                <label for="' + type + 'Age">Over 21?</label> <input id="' + type + 'Age" class="input" type="checkbox" value="true">' +
+                '                <label for="' + type + 'Age">Over 21?</label> <input id="' + type + 'Age" class="input" type="checkbox">' +
                 '              </div>';
       break;
     case 'string':
