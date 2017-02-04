@@ -123,6 +123,8 @@ var populateBookings = function(){
             count += 1;
             getBooking();
           }
+        } else {
+          $('#bookings').append('<div style="width: 87%" class="alert alert-info">No bookings found</div>');
         }
       })()
   });
