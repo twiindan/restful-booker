@@ -101,23 +101,21 @@ describe('restful-booker - Edit feature switch', function () {
           request(server)
             .put('/booking/1')
             .set('Accept', 'application/json')
-            .set('Cookie', 'token=' + res.body.token)
             .send(partialPayload)
             .expect(400, done);
         })
     });
   });
 
-  it('responds with a JSON partial record edit feature switch on PUT /booking', function(done){
+  it('responds with a JSON partial record edit feature switch on PATCH /booking', function(done){
     helpers.setEnv('json', 'string', 'full', 'partial', 'server', 'basic', 'nov1', function(server){
       request(server)
         .post('/booking')
         .send(payload)
         .then(function(res){
           request(server)
-            .put('/booking/1')
+            .patch('/booking/1')
             .set('Accept', 'application/json')
-            .set('Cookie', 'token=' + res.body.token)
             .send(partialPayload)
             .expect(200)
             .expect(payload2, done);
@@ -125,7 +123,7 @@ describe('restful-booker - Edit feature switch', function () {
     });
   });
 
-  it('responds with a XML partial record edit feature switch on PUT /booking', function(done){
+  it('responds with a XML partial record edit feature switch on PATCH /booking', function(done){
     helpers.setEnv('xml', 'string', 'full', 'partial', 'server', 'basic', 'nov1', function(server){
       xmlPayload = js2xmlparser('booking', payload);
       xmlPayload2 = js2xmlparser('booking', payload2);
@@ -138,7 +136,7 @@ describe('restful-booker - Edit feature switch', function () {
         .then(function(res){
           return xml2js(res.text, {explicitArray: false, valueProcessors: [parseNumbers, parseBooleans]}, function (err, result) {
             request(server)
-              .put('/booking/' + result['created-booking'].bookingid)
+              .patch('/booking/' + result['created-booking'].bookingid)
               .set('Content-type', 'text/xml')
               .send(xmlPartialPayload)
               .expect(200)
@@ -148,7 +146,7 @@ describe('restful-booker - Edit feature switch', function () {
     });
   });
 
-  it('responds with a URL encoded partial record edit feature switch on PUT /booking', function(done){
+  it('responds with a URL encoded partial record edit feature switch on PATCH /booking', function(done){
     helpers.setEnv('form', 'string', 'full', 'partial', 'server', 'basic', 'nov1', function(server){
 
       request(server)
@@ -157,12 +155,32 @@ describe('restful-booker - Edit feature switch', function () {
         .send(formurlencoded(payload))
         .then(function(res){
           request(server)
-            .put('/booking/' + res.text.match(/[0-9]/)[0])
+            .patch('/booking/' + res.text.match(/[0-9]/)[0])
             .set('Content-type', 'application/x-www-form-urlencoded')
             .send(formurlencoded(partialPayload))
             .expect(200)
             .expect(formurlencoded(payload2), done);
         })
+    });
+  });
+
+  it('responds with a 404 calling PATCH /booking when in full mode', function(done){
+    helpers.setEnv('json', 'string', 'full', 'full', 'server', 'basic', 'nov1', function(server){
+        request(server)
+          .patch('/booking/1')
+          .set('Accept', 'application/json')
+          .send(partialPayload)
+          .expect(404, done);
+    });
+  });
+
+  it('responds with a 404 calling PUT /booking when in partial mode', function(done){
+    helpers.setEnv('json', 'string', 'full', 'partial', 'server', 'basic', 'nov1', function(server){
+        request(server)
+          .put('/booking/1')
+          .set('Accept', 'application/json')
+          .send(payload)
+          .expect(404, done);
     });
   });
 

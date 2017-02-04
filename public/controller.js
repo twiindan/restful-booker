@@ -100,7 +100,7 @@ var partialEditBooking = function(value, item, bookingId){
   var message = validate(booking, constraints);
 
   if(highlightInputs('edit', message)){
-    makeRequest('/booking/' + bookingId, 'PUT', booking, 'edit', function(data){
+    makeRequest('/booking/' + bookingId, 'PATCH', booking, 'edit', function(data){
       $('#editStatus').text('Booking updated');
     });
   }

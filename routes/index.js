@@ -10,7 +10,7 @@ var router  = express.Router(),
     exportFeature = require('../helpers/export'),
     exportUrl;
 
-router.get('/', function(req, res, next){
+router.get('/', function(req, res){
   view.index(function(render){
     if(features.indexFeature() === 'page' && typeof(req.query.page) == 'undefined'){
       res.redirect('/?page=1');
@@ -20,7 +20,7 @@ router.get('/', function(req, res, next){
   });
 });
 
-router.get('/ping', function(req, res, next) {
+router.get('/ping', function(req, res) {
   res.sendStatus(201);
 });
 
@@ -34,7 +34,7 @@ router.get('/booking/count', function(req, res){
   });
 });
 
-router.get('/booking', function(req, res, next) {
+router.get('/booking', function(req, res) {
   var query = {};
 
   if(typeof(req.query.firstname) != 'undefined'){
@@ -82,7 +82,7 @@ router.get('/booking', function(req, res, next) {
   }
 });
 
-router.get('/booking/:id',function(req, res, next){
+router.get('/booking/:id',function(req, res){
   Booking.get(req.params.id, function(err, record){
     if(record){
       var booking = parse.booking(req.headers.accept, record);
@@ -98,7 +98,7 @@ router.get('/booking/:id',function(req, res, next){
   })
 });
 
-router.post('/booking', function(req, res, next) {
+router.post('/booking', function(req, res) {
   newBooking = req.body;
 
   if(req.headers['content-type'] === 'text/xml') newBooking = newBooking.booking;
@@ -124,7 +124,7 @@ router.post('/booking', function(req, res, next) {
   });
 });
 
-router.put('/booking/:id', function(req, res, next) {
+var processUpdate = function(req, res){
   updatedBooking = req.body;
 
   if(req.headers['content-type'] === 'text/xml') updatedBooking = updatedBooking.booking;
@@ -150,9 +150,25 @@ router.put('/booking/:id', function(req, res, next) {
       res.status(400).send(msg);
     }
   });
+};
+
+router.put('/booking/:id', function(req, res) {
+  if(features.editFeature() === 'full'){
+    processUpdate(req, res);
+  } else {
+    res.sendStatus(404);
+  }
 });
 
-router.delete('/booking/:id', function(req, res, next) {
+router.patch('/booking/:id', function(req, res) {
+  if(features.editFeature() === 'partial'){
+    processUpdate(req, res);
+  } else {
+    res.sendStatus(404);
+  }
+});
+
+router.delete('/booking/:id', function(req, res) {
     Booking.get(req.params.id, function(err, record){
       if(record){
         Booking.delete(req.params.id, function(err){
@@ -164,7 +180,7 @@ router.delete('/booking/:id', function(req, res, next) {
     });
 });
 
-router.get('/export', function(req, res, next){
+router.get('/export', function(req, res){
   exportFeature.exportBehaviour(req, function(status, responsePayload){
     if(responsePayload){
       res.send(responsePayload);
@@ -174,7 +190,7 @@ router.get('/export', function(req, res, next){
   });
 });
 
-router.get('/export/v[1-2]', function(req, res, next){
+router.get('/export/v[1-2]', function(req, res){
   exportFeature.exportBehaviour(req, function(status, responsePayload){
     if(responsePayload){
       res.send(responsePayload);
@@ -184,7 +200,7 @@ router.get('/export/v[1-2]', function(req, res, next){
   });
 });
 
-router.post('/auth', function(req, res, next){
+router.post('/auth', function(req, res){
   credentials = req.body;
 
   if(req.headers['content-type'] === 'text/xml') credentials = credentials.auth;
