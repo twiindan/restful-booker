@@ -7,6 +7,7 @@
 var app = require('../app');
 var debug = require('debug')('restful-booker-v2:server');
 var http = require('http');
+var features = require('../helpers/features');
 
 /**
  * Get port from environment and store in Express.
@@ -87,4 +88,12 @@ function onListening() {
     ? 'pipe ' + addr
     : 'port ' + addr.port;
   debug('Listening on ' + bind);
+  console.log("App has started on: " + bind);
+  console.log(" - Payload:  " + features.payloadFeature())
+  console.log(" - Dob:      " + features.dobFeature())
+  console.log(" - Index:    " + features.indexFeature())
+  console.log(" - Edit:     " + features.editFeature())
+  console.log(" - Validate: " + features.validateFeature())
+  console.log(" - Auth:     " + features.authFeature())
+  console.log(" - Version:  " + features.versionFeature())
 }
