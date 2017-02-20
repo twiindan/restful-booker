@@ -95,8 +95,17 @@ var populateBookings = function(){
           limit = payload.length - 1;
           break;
         case 'xml':
-          payload = x2js.xml_str2json(data)['bookings']['booking'];
-          limit = payload.length - 1;
+          if(typeof x2js.xml_str2json(data)['bookings']['booking'] === 'undefined'){
+            payload = [];
+            limit = payload.length - 1;
+          } else {
+            payload = x2js.xml_str2json(data)['bookings']['booking'];
+            limit = payload.length - 1;
+          }
+
+          if(typeof payload.length === 'undefined'){
+            payload = [{ id: payload.id }];
+          }
           break;
         case 'form':
           payload = $.map(form2Json(data), function(value, index){
