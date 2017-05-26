@@ -85,6 +85,8 @@ var populateBookings = function(){
   }
 
   $.get(path, function(data) {
+      if(typeof data === "undefined") return;
+
       var payload,
           limit,
           count = 0;
