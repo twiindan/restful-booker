@@ -105,7 +105,6 @@ var populateBookings = function(){
               payload = $.map(form2Json(data), function(value, index){
                 return [value]
               });
-              // if(bookingCount.count === 1) payload = [payload];
               break;
           }
 
