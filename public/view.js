@@ -76,68 +76,62 @@ function getUrlVars(){
 }
 
 var populateBookings = function(){
-  var path;
+  $.get('/booking/count', function(bookingCount){
+    if(bookingCount.count === 0){
+      $('#bookings').append('<div style="width: 87%" class="alert alert-info">No bookings found</div>');
+    } else {
+      var path;
 
-  if(indexFlag === 'page'){
-    path = '/booking?page=' + getUrlVars()['page'];
-  } else {
-    path = '/booking';
-  }
-
-  $.get(path, function(data) {
-      if(typeof data === "undefined") return;
-
-      var payload,
-          limit,
-          count = 0;
-
-      switch (payloadFlag) {
-        case 'json':
-          payload = data;
-          limit = payload.length - 1;
-          break;
-        case 'xml':
-          if(typeof x2js.xml_str2json(data)['bookings']['booking'] === 'undefined'){
-            payload = [];
-            limit = payload.length - 1;
-          } else {
-            payload = x2js.xml_str2json(data)['bookings']['booking'];
-            limit = payload.length - 1;
-          }
-
-          if(typeof payload.length === 'undefined'){
-            payload = [{ id: payload.id }];
-          }
-          break;
-        case 'form':
-          payload = $.map(form2Json(data), function(value, index){
-            return [value]
-          });
-          limit = payload.length - 1;
-          break;
+      if(indexFlag === 'page'){
+        path = '/booking?page=' + getUrlVars()['page'];
+      } else {
+        path = '/booking';
       }
 
-      (getBooking = function(){
-        if(payload.length > 0){
-          var bookingid = payload[count].id;
+      $.get(path, function(data) {
+          var payload,
+              limit,
+              count = 0;
 
-          $.get('/booking/' + bookingid, function(booking){
-            if(payloadFlag === "xml") booking = x2js.xml_str2json(booking).booking;
-            if(payloadFlag === "form") booking = form2Json(booking.replace(/\+/g,'%20'));
-
-            $('#bookings')
-              .append('<div class="row bookingEntry" id=' + bookingid + '><div class="col-md-2"><p>' + booking.firstname + '</p></div><div class="col-md-2"><p>' + booking.lastname + '</p></div><div class="col-md-1"><p>' + booking.totalprice + '</p></div><div class="col-md-2"><p>' + booking.depositpaid + '</p></div><div class="col-md-2"><p>' + booking.bookingdates.checkin + '</p></div><div class="col-md-2"><p>' + booking.bookingdates.checkout +
-                      '</p></div><div class="col-md-1"><a href="#" onclick="showEditBooking(' + bookingid + ')" ><span class="glyphicon glyphicon-pencil"></span></a> <a href="#" onclick="deleteBooking(' + bookingid + ')"><span class="glyphicon glyphicon-trash"></span></a></div></div>');
-          });
-
-          if(count < limit){
-            count += 1;
-            getBooking();
+          switch (payloadFlag) {
+            case 'json':
+              payload = data;
+              break;
+            case 'xml':
+              payload = x2js.xml_str2json(data)['bookings']['booking'];
+              if(bookingCount.count === 1) payload = [payload];
+              break;
+            case 'form':
+              payload = $.map(form2Json(data), function(value, index){
+                return [value]
+              });
+              // if(bookingCount.count === 1) payload = [payload];
+              break;
           }
-        } else {
-          $('#bookings').append('<div style="width: 87%" class="alert alert-info">No bookings found</div>');
-        }
-      })()
+
+          limit = payload.length - 1;
+
+          (getBooking = function(){
+            if(payload.length > 0){
+              var bookingid = payload[count].id;
+
+              $.get('/booking/' + bookingid, function(booking){
+                if(payloadFlag === "xml") booking = x2js.xml_str2json(booking).booking;
+                if(payloadFlag === "form") booking = form2Json(booking.replace(/\+/g,'%20'));
+
+                $('#bookings')
+                  .append('<div class="row bookingEntry" id=' + bookingid + '><div class="col-md-2"><p>' + booking.firstname + '</p></div><div class="col-md-2"><p>' + booking.lastname + '</p></div><div class="col-md-1"><p>' + booking.totalprice + '</p></div><div class="col-md-2"><p>' + booking.depositpaid + '</p></div><div class="col-md-2"><p>' + booking.bookingdates.checkin + '</p></div><div class="col-md-2"><p>' + booking.bookingdates.checkout +
+                          '</p></div><div class="col-md-1"><a href="#" onclick="showEditBooking(' + bookingid + ')" ><span class="glyphicon glyphicon-pencil"></span></a> <a href="#" onclick="deleteBooking(' + bookingid + ')"><span class="glyphicon glyphicon-trash"></span></a></div></div>');
+              });
+
+              if(count < limit){
+                count += 1;
+                getBooking();
+              }
+            }
+          })()
+      });
+    }
   });
 };
 
