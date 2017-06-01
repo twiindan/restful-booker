@@ -34,7 +34,7 @@ Acceptance Criteria:
 ### Check-in and out date validations:
 
 - Check-in must be before check-out
-- Check-in must be in the future
+- Check-in must be today or in the future
 - There is no minimum or maximum stay
 - Stay must conclude before December 31st 2099
 
